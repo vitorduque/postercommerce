@@ -5,7 +5,7 @@ class OrderCanceled < ApplicationMailer
   @client = client
   @order = order
   mail( :to => @client.email,
-  :subject => "Your poster order" )
+  :subject => "Your poster order ##{order.id}" )
 end
 
 

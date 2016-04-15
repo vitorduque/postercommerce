@@ -1,7 +1,7 @@
 class CommandSet
 
-  def execute(order)
-    Facade.new().set(order)
+  def execute(order, client)
+    Facade.new().set(order, client)
   end
 
 end

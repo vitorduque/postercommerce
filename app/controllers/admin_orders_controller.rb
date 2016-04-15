@@ -11,10 +11,11 @@ class AdminOrdersController < ApplicationController
 
   def set
     @order = @command['show'].execute(Order.new(id: params[:id]))
+    @client = @command['show'].execute(Client.new(id: params[:id_client]))
     if @order.id.nil?
       redirect_to controller: 'admin_orders', action: 'index', notice: 'Error: No ID reached out'
     end
-    result = @command['set'].execute(@order)
+    result = @command['set'].execute(@order, @client)
     redirect_to controller: 'admin_orders'
   end
 

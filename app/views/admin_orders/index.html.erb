@@ -46,9 +46,9 @@
       <td><%=shipping_status%></td>
       <td><%=order.client_id%></td>
       <%if order.payment_status.eql? "0"%>
-        <td><%= link_to "Set payment as 'Paid'", controller: 'admin_orders', action: 'set', id: order.id%></td>
+        <td><%= link_to "Set payment as 'Paid'", controller: 'admin_orders', action: 'set', id: order.id, id_client: order.client_id%></td>
       <%elsif order.shipping_status.eql? "1"%>
-        <td><%= link_to "Set deliver as 'Delivered'", controller: 'admin_orders', action:'set', id: order.id%></td>
+        <td><%= link_to "Set deliver as 'Delivered'", controller: 'admin_orders', action:'set', id: order.id, id_client: order.client_id%></td>
       <%end%>
 
     </tbody>

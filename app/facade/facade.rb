@@ -208,7 +208,7 @@ class Facade
 
   end
 
-  def set(domain)
+  def set(domain, client)
     @strategy[domain.class.to_s]['set'].each do |t|
       teste = t.validate(domain)
       if teste.length != 0
@@ -216,14 +216,14 @@ class Facade
       end
     end
 
-
+    #Basicaly verify if the order was paid or not
     if @strategyResult.length == 0
-      #Vai pros daos
-      #@dao[domain.class.to_s].create(domain)
       if domain.payment_status.eql? "Waiting payment"
         @dao[domain.class.to_s].set_as_paid(domain)
       elsif domain.payment_status.eql? "Paid"
+        binding.pry
         @dao[domain.class.to_s].set_as_delivered(domain)
+        DeliveryOrder.send_delivery_email(domain, client).deliver
       end
     else
       return @strategyResult
