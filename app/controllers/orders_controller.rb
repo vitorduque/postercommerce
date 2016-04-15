@@ -37,6 +37,7 @@ class OrdersController < ApplicationController
         result = @command['create'].execute(@order)
         if result.nil?
           insert_items(session[:cart_signed_in][session[:user_id].to_s], @order.client_id, get_last_order_by_id(@order.client_id))
+          SendOrder.send_order_email(@client, @order).deliver
           session[:cart_signed_in] = nil
           redirect_to root_path
         else
