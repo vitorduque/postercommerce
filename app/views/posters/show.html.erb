@@ -1,0 +1,98 @@
+<p id="notice"><%= notice %></p>
+
+<%
+  status = nil
+  peq = nil
+  med = nil
+  gra = nil
+  if @poster.active.eql? 0
+    status = "No"
+  else
+    status = "Yes"
+  end
+
+  if @poster.small.eql? 0
+    peq = "No"
+  else
+    peq = "Yes"
+  end
+
+  if @poster.medium.eql? 0
+    med = "No"
+  else
+    med = "Yes"
+  end
+
+  if @poster.large.eql? 0
+    gra = "No"
+  else
+    gra = "Yes"
+  end
+%>
+
+<p>
+  <strong>Id:</strong>
+  <%= @poster.id %>
+</p>
+<p>
+  <strong>Name:</strong>
+  <%= @poster.name %>
+</p>
+
+<p>
+  <strong>Small:</strong>
+  <%= peq %>
+</p>
+
+<p>
+  <strong>Medium:</strong>
+  <%= med %>
+</p>
+
+<p>
+  <strong>Large:</strong>
+  <%= gra %>
+</p>
+
+<p>
+  <strong>Price small:</strong>
+  <%= @poster.price_small %>
+</p>
+
+<p>
+  <strong>Price medium:</strong>
+  <%= @poster.price_medium %>
+</p>
+
+<p>
+  <strong>Price large:</strong>
+  <%= @poster.price_large %>
+</p>
+
+<p>
+  <strong>Category:</strong>
+  <%= @poster.category %>
+</p>
+
+<p>
+  <strong>Created at:</strong>
+  <%= @poster.created_at %>
+</p>
+
+<p>
+  <strong>Update date:</strong>
+  <%= @poster.updated_at %>
+</p>
+
+<p>
+  <strong>Active:</strong>
+  <%= status %>
+</p>
+<p>
+  <strong>Image:</strong>
+  <img src="data:image/jpeg;charset=utf-8;base64,<%= @poster.image %>" width="300" />
+</p>
+
+
+
+<%= link_to 'Voltar', posters_path %>

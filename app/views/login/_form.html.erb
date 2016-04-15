@@ -1,0 +1,26 @@
+<%= form_for @login,
+  url: url_for(controller: params[:controller], action: 'log_in'),
+  method: params[:method], html: { class: 'form-control' } do |f| %>
+  <%  if @login.errors.any? %>
+    <div id="error_explanation">
+
+      <ul>
+      <% @login.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end%></ul>
+    </div>
+  <% end %>
+  <div class="field">
+    <%= f.label :email %>
+    <%= f.text_field :email%>
+  </div>
+  <div class="field">
+    <%= f.label :password %>
+    <%= f.password_field :password%>
+  </div>
+  <div class='actions'>
+  <%= f.submit 'Login'  %>
+  </div>
+  <br>
+  <%=link_to 'Register', "/clients/new"%>
+<% end %>

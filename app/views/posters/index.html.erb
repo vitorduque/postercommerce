@@ -1,0 +1,87 @@
+<h1>Listing Posters</h1>
+<p id="notice"><%= params[:notice] %> </p>
+
+
+
+<p><%=link_to 'New','posters/new'%></p>
+<table>
+  <thead>
+    <tr>
+      <th></th>
+      <th colspan="3">Size</th>
+      <th colspan="3">Price</th>
+      <th colspan="3"></th>
+    </tr>
+    <tr>
+      <th>Id</th>
+      <th>Name</th>
+      <th>Small</th>
+      <th>Medium</th>
+      <th>Large</th>
+      <th>Small</th>
+      <th>Medium</th>
+      <th>Large</th>
+      <th>Category</th>
+      <th>Active</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+      <% @posters.each do |poster| %>
+
+      <%
+        status = nil
+        peq = nil
+        med = nil
+        gra = nil
+        if poster.active.eql? "0"
+          status = "No"
+        else
+          status = "Yes"
+        end
+
+        if poster.small.eql? "0"
+          peq = "No"
+        else
+          peq = "Yes"
+        end
+
+        if poster.medium.eql? "0"
+          med = "No"
+        else
+          med = "Yes"
+        end
+
+        if poster.large.eql? "0"
+          gra = "No"
+        else
+          gra = "Yes"
+        end
+      %>
+
+
+        <tr>
+          <td><%= poster.id %></td>
+          <td><%= poster.name %></td>
+          <td><%= peq %></td>
+          <td><%= med %></td>
+          <td><%= gra %></td>
+          <td>$ <%= poster.price_small %></td>
+          <td>$ <%= poster.price_medium %></td>
+          <td>$ <%= poster.price_large %></td>
+          <td><%= poster.category %></td>
+          <td><%= status %></td>
+          <td><%= link_to 'Edit', controller: 'posters', action: 'edit', id: poster.id  %></td>
+          <td><%= link_to 'Details', controller: 'posters', action: 'show', id: poster.id  %></td>
+          <%
+            if poster.active.eql? "1"%>
+              <td><%=link_to 'Deactivate', "/posters/#{poster.id}", method: :delete %></td>
+          <%
+            end
+          %>
+
+        </tr>
+      <% end %>
+    </tbody>
+  </table>

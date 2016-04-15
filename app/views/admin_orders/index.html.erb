@@ -1,0 +1,56 @@
+<%=link_to 'Back', controller:'admin', action: 'index'%><br><br>
+<%
+  payment_status = nil
+  shipping_status = nil
+%>
+<p id="notice"><%= params[:notice] %> </p>
+<table>
+  <thead align="center">
+    <td><strong>ID</strong></td>
+    <td><strong>Total price</strong></td>
+    <td><strong>Payment method</strong></td>
+    <td><strong>Shipping method</strong></td>
+    <td><strong>Date</strong></td>
+    <td><strong>Payment status</strong></td>
+    <td><strong>Shipping status</strong></td>
+    <td><strong>Client id</strong></td>
+    <td><strong>Admin action</strong></td>
+  </thead>
+  <%@orders.each do |order|%>
+    <tbody  align="center">
+      <%
+        if order.payment_status.eql? "0"
+          payment_status = "Waiting payment"
+        elsif order.payment_status.eql? "1"
+          payment_status = "Paid"
+        else order.payment_status.eql? "2"
+          payment_status = "CANCELED"
+        end
+
+        if order.shipping_status.eql? "0"
+          shipping_status = "Waiting payment/Not delivered"
+        elsif order.shipping_status.eql? "1"
+          shipping_status = "In process"
+        elsif order.shipping_status.eql? "2"
+          shipping_status = "Delivered"
+        elsif order.shipping_status.eql? "3"
+          shipping_status = "CANCELED"
+        end
+      %>
+      <td><%=order.id%></td>
+      <td>$<%=order.total_price%></td>
+      <td><%=order.payment_method%></td>
+      <td><%=order.shipping_method%></td>
+      <td><%=order.date%></td>
+      <td><%=payment_status%></td>
+      <td><%=shipping_status%></td>
+      <td><%=order.client_id%></td>
+      <%if order.payment_status.eql? "0"%>
+        <td><%= link_to "Set payment as 'Paid'", controller: 'admin_orders', action: 'set', id: order.id%></td>
+      <%elsif order.shipping_status.eql? "1"%>
+        <td><%= link_to "Set deliver as 'Delivered'", controller: 'admin_orders', action:'set', id: order.id%></td>
+      <%end%>
+
+    </tbody>
+  <%end%>
+</table>

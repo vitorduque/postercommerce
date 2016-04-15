@@ -1,0 +1,10 @@
+<%= link_to 'Voltar', posters_path %>
+
+<% params[:action]='create' %>
+<% params[:controller]='posters' %>
+<% params[:method]= :post %>
+<p id="notice"><%= params[:notice] %> </p>
+
+<%= render 'form' %>
+
+<% link_to 'Voltar', posters_path %>

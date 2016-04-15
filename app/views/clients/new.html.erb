@@ -1,0 +1,8 @@
+<%= link_to 'Back to store', root_path %>
+
+<% params[:action]='create' %>
+<% params[:controller]='clients' %>
+<% params[:method]= :post %>
+<p id="notice"><%= params[:notice] %> </p>
+
+<%= render 'form' %>

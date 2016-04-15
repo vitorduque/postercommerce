@@ -1,0 +1,67 @@
+<%if session[:signed_in] != true%>
+  <%=link_to 'Login', "/login"%><br><br>
+  <%=link_to 'Register', "/clients/new"%><br><br>
+  <%= link_to "My cart ", "/cart" %>
+
+<%else%>
+  Hello <%=session[:user]["name"]%><br>
+  <%=session[:user_id]%><br>
+  <%= link_to "My cart ", "/cart" %><br>
+  <%= link_to "My orders ", 'orders' %><br><br>
+  <%= link_to 'Leave', log_out_path %><br>
+<%end%>
+
+<hr>
+<h1>PosterCommerce Index</h1>
+<%  if @cart_item.errors.any? %>
+  <div id="error_explanation">
+    <ul>
+    <% @cart_item.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end%></ul>
+  </div>
+<% end %>
+
+<p id="notice"><%= params[:notice] %> </p>
+<%@posters.each do |poster|%>
+  <%= form_for @cart_item,
+    url: url_for(controller: 'cart', action: 'add_to_cart'),
+    method: 'post', html: { class: 'form-control' } do |f| %>
+
+
+
+    <%@list = Array.new()%>
+    <%@list << "Small" if poster.small.eql?  "1" %>
+    <%@list << "Medium" if poster.medium.eql? "1" %>
+    <%@list << "Large" if poster.large.eql? "1" %>
+    <%@price = Hash.new %>
+    <%@price = {"Small" => poster.price_small,
+                     "Medium" => poster.price_medium,
+                     "Large" => poster.price_large} %>
+
+    <%if poster.active.eql? "1"%>
+      <%if !@list.empty?%>
+        <label>ID: </label><%=poster.id%><br>
+        <%= f.hidden_field :item_id, :value => poster.id%>
+        <label>Name: </label><%= poster.name%><br>
+        <%= f.hidden_field :name, :value => poster.name%>
+        <label>Category: </label><%= poster.category%><br>
+        <%= f.hidden_field :category, :value => poster.category%>
+        <img src="data:image/jpeg;charset=utf-8;base64,<%= poster.image %>" width="100" /><br>
+        <select name="cart_item[size]" id="cart_item_unit_price">
+          <%@list.each do |t|%>
+            <option value="<%=t%>"> <%=t %> <%= @price[t]%> </option>
+          <%end%>
+        </select><br>
+        <div class="field">
+          <%= f.label :amount %>
+          <%= f.text_field :amount%>
+        </div>
+        <div><%= f.submit 'Add to cart'%></div><br>
+      <%end%>
+    <%end%>
+
+<% end %>
+
+
+<%end%>

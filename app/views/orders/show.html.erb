@@ -1,0 +1,12 @@
+
+<%@items.each do |item|%>
+    <%=item.amount%>x <%=item.name%> - <%=item.size%> <br>
+<%end%>
+<hr>
+Order date: <%=@order.date%><br>
+Payment Status: <%=@order.payment_status%><br>
+Shipping Method: <%=@order.shipping_method%> <br>
+Shipping Status: <%=@order.shipping_status%><br>
+Total price: <%=@order.total_price%><br><br>
+
+<%=link_to 'Back', controller: 'orders', action: 'index' %>
