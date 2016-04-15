@@ -219,9 +219,9 @@ class Facade
     #Basicaly verify if the order was paid or not
     if @strategyResult.length == 0
       if domain.payment_status.eql? "Waiting payment"
+        PaidOrder.send_paid_email(domain, client).deliver
         @dao[domain.class.to_s].set_as_paid(domain)
       elsif domain.payment_status.eql? "Paid"
-        binding.pry
         @dao[domain.class.to_s].set_as_delivered(domain)
         DeliveryOrder.send_delivery_email(domain, client).deliver
       end

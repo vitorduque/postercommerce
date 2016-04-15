@@ -5,7 +5,7 @@ class SendOrder < ApplicationMailer
   @client = client
   @order = order
   mail( :to => @client.email,
-  :subject => "Your order is #'#{order.id}'" )
+  :subject => "New order was registred in our database" )
 end
 
 end

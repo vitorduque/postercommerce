@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  </head>
+  <body>
+    <h1>Your order #<%=@order.id%> status (payment) was recently changed!</h1>
+    <p>Your order was paid!</p>
+    <p><%=link_to "Click here", :host => 'localhost:3000', controller: 'orders', action: 'show', id: @order.id%> to see all information!</p>
+  </body>
+</html>
