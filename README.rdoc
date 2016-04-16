@@ -1,28 +1,30 @@
 == README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+To run it:
 
-Things you may want to cover:
+* Ruby version: ruby 2.2.3p173
 
-* Ruby version
+* Rails version: Rails 4.2.6
 
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+* Configuration:
+Run db.sql to create tables and seed the database
+Modify dao_connection_datas.rb
+Run it
 
 
-Please feel free to use a different markup language if you do not plan to run
-<tt>rake doc:app</tt>.
+== Something you must need to know
+
+* This is an e-commerce project for my Software Engineer Laboratory class.
+
+* This project do not use ActiveRecord (sounds crazy, but ok), reasons:
+        * I must implement the following design patterns:
+                * Command
+                * Facade
+                * Strategy
+                * DAO (the real reason why I do not implement ActiveRecord)
+
+        * Using:
+                * MVC architectural pattern
+
+* Documentation is still being made -in portuguese- (see on "software specifications" folder) :D
+
