@@ -1,0 +1,30 @@
+== README
+
+To run it:
+
+* Ruby version: ruby 2.2.3p173
+
+* Rails version: Rails 4.2.6
+
+* Configuration:
+Run db.sql to create tables and seed the database
+Modify dao_connection_datas.rb
+Run it
+
+
+== Something you must need to know
+
+* This is an e-commerce project for my Software Engineer Laboratory class.
+
+* This project do not use ActiveRecord (sounds crazy, but ok), reasons:
+        * I must implement the following design patterns:
+                * Command
+                * Facade
+                * Strategy
+                * DAO (the real reason why I do not implement ActiveRecord)
+
+        * Using:
+                * MVC architectural pattern
+
+* Documentation is still being made -in portuguese- (see on "software specifications" folder) :D
+
