@@ -1,5 +1,5 @@
 class AdminController < ApplicationController
-  require '/home/vitor/RailsProjects/LES/app/validations/auth_admin.rb'
+  require '/home/vitor/RailsProjects/postercommerce/app/validations/auth_admin.rb'
 
   def index
     if session[:admin_signed_in] == true

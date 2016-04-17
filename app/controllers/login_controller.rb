@@ -1,5 +1,5 @@
 class LoginController < ApplicationController
-  require '/home/vitor/RailsProjects/LES/app/validations/auth.rb'
+  require '/home/vitor/RailsProjects/postercommerce/app/validations/auth.rb'
 
   def index
       @login = Login.new()
