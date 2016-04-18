@@ -23,8 +23,12 @@
           payment_status = "Waiting payment"
         elsif order.payment_status.eql? "1"
           payment_status = "Paid"
-        else order.payment_status.eql? "2"
+        elsif order.payment_status.eql? "2"
           payment_status = "CANCELED"
+        elsif order.payment_status.eql? "3"
+          payment_status = "COMPLAINED"
+        elsif order.payment_status.eql? "4"
+          payment_status = "Voucher sent"
         end
 
         if order.shipping_status.eql? "0"
@@ -35,6 +39,10 @@
           shipping_status = "Delivered"
         elsif order.shipping_status.eql? "3"
           shipping_status = "CANCELED"
+        elsif order.shipping_status.eql? "4"
+          shipping_status = "COMPLAINED"
+        elsif order.shipping_status.eql? "5"
+          shipping_status = "Voucher sent"
         end
       %>
       <td><%=order.id%></td>
@@ -49,6 +57,8 @@
         <td><%= link_to "Set payment as 'Paid'", controller: 'admin_orders', action: 'set', id: order.id, id_client: order.client_id%></td>
       <%elsif order.shipping_status.eql? "1"%>
         <td><%= link_to "Set deliver as 'Delivered'", controller: 'admin_orders', action:'set', id: order.id, id_client: order.client_id%></td>
+      <%elsif order.shipping_status.eql? "4"%>
+        <td><%= link_to "Send voucher", controller: 'admin_orders', action:'set', id: order.id, id_client: order.client_id%></td>
       <%end%>
 
     </tbody>

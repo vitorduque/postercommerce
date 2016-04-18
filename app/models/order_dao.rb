@@ -118,4 +118,19 @@ WHERE orders.id = '#{order_id}'")
     db.close
   end
 
+  def set_as_complained(order_id)
+    db = @conn.open
+    db.query("update orders set shipping_status = 4, payment_status = 3 where orders.id = '#{order_id}'")
+
+    db.close
+  end
+
+  def set_voucher_sent(order)
+    db = @conn.open
+
+    db.query("update orders set shipping_status = 5, payment_status = 4 where orders.id = '#{order.id}'")
+
+    db.close
+  end
+
 end

@@ -26,7 +26,7 @@
       <%elsif  order.shipping_status.include? "In"%>
         <td><%= link_to 'Cancel order', controller: 'orders', action: 'cancel_order', id: order.id %></td>
       <%elsif order.shipping_status.eql? "Delivered"%>
-        <td><%= link_to 'Complain it' %></td>
+        <td><%= link_to 'Complain it', controller: 'orders', action: 'complain_order', id: order.id %></td>
       <%end%>
   <%end%>
 </table><br><br>

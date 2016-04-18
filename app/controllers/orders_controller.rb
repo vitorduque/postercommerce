@@ -63,6 +63,18 @@ class OrdersController < ApplicationController
     end
   end
 
+  def complain_order
+    @order = get_order_by_id(params[:id])
+    get_client
+    if session[:user_id].eql? @order.client_id
+      ComplainOrder.send_complained_email(@client, @order).deliver
+      complain_order_by_id(params[:id])
+      redirect_to controller: 'orders', action: 'index'
+    else
+      index
+    end
+  end
+
 
 private
   def user_signed_in?
@@ -71,6 +83,11 @@ private
     else
       false
     end
+  end
+
+  def complain_order_by_id(order_id)
+    dao = OrderDao.new(OpenConnection.new('localhost', 'root', 'root', '3306', 'appmysql_development'))
+    dao.set_as_complained(order_id)
   end
 
   def get_orders(client_id)

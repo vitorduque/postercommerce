@@ -39,6 +39,7 @@ class Facade
     @dao[Client.to_s] = ClientDao.new(OpenConnection.new(dao_conn_data.host, dao_conn_data.user,dao_conn_data.password,dao_conn_data.port,dao_conn_data.database_name))
     @dao[Login.to_s] = LoginDao.new(OpenConnection.new(dao_conn_data.host, dao_conn_data.user,dao_conn_data.password,dao_conn_data.port,dao_conn_data.database_name))
     @dao[Order.to_s] = OrderDao.new(OpenConnection.new(dao_conn_data.host, dao_conn_data.user,dao_conn_data.password,dao_conn_data.port,dao_conn_data.database_name))
+    @dao[Voucher.to_s] = VoucherDao.new(OpenConnection.new(dao_conn_data.host, dao_conn_data.user,dao_conn_data.password,dao_conn_data.port,dao_conn_data.database_name))
 
     @strategy = Hash.new()
 
@@ -224,11 +225,22 @@ class Facade
       elsif domain.payment_status.eql? "Paid"
         @dao[domain.class.to_s].set_as_delivered(domain)
         DeliveryOrder.send_delivery_email(domain, client).deliver
+      elsif domain.payment_status.eql? "COMPLAINED"
+        voucher = voucher_gen
+        @dao[Voucher.to_s].create(voucher, domain)
+        @dao[domain.class.to_s].set_voucher_sent(domain)
+        SendVoucher.send_voucher_email(client, domain, voucher).deliver
       end
     else
       return @strategyResult
     end
 
+  end
+
+
+private
+  def voucher_gen
+    SecureRandom.uuid
   end
 
 end

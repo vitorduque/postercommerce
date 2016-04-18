@@ -27,7 +27,7 @@ Rails.application.routes.draw do
   get '/admin_log_out', to: 'admin#admin_log_out', as: 'admin_logout'
 
   get '/set', to: 'admin_orders#set'
-
+  get '/complain_order', to: 'orders#complain_order'
   #post '/edit', to: 'clients#edit'
   #post '/clients/:id/edit', to: 'clients#update'
   # The priority is based upon order of creation: first created -> highest priority.
