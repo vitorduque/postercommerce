@@ -23,7 +23,8 @@ class OrdersController < ApplicationController
   end
 
   def create
-    @order = Order.new(params.require(:order).permit(:total_price, :payment_method, :client_id, :shipping_method))
+    @order = Order.new(params.require(:order).permit(:total_price, :payment_method, :client_id, :shipping_method, :id_voucher))
+    @voucher = @command['show'].execute(Voucher.new(id_voucher: @order.id_voucher))
     @order.client_id = session[:user_id]
     @shipping_price = {"FedEX" => 12.30, "USPS" => 10, nil => 0}
     @order.total_price = @order.total_price.to_f + @shipping_price[@order.shipping_method]
@@ -33,13 +34,25 @@ class OrdersController < ApplicationController
         @order.errors.add("Error: ", "Your cart is empty ")
         render '/cart/cart'
       else
-
-        result = @command['create'].execute(@order)
-        if result.nil?
-          insert_items(session[:cart_signed_in][session[:user_id].to_s], @order.client_id, get_last_order_by_id(@order.client_id))
-          SendOrder.send_order_email(@client, @order).deliver
-          session[:cart_signed_in] = nil
-          redirect_to root_path
+        if @voucher.id_voucher.nil?
+          result = @command['create'].execute(@order)
+        else
+          voucher_price = @voucher.price.to_f
+          order_price = @order.total_price.to_f
+          if voucher_price >= order_price
+            @order.total_price = 0
+          else
+            @order.total_price = order_price - voucher_price
+            @order.total_price = @order.total_price.round(2)
+          end
+          result = @command['create'].execute(@order)
+          result2 = @command['edit'].execute(@voucher)
+        end
+        if result.nil? and result2.nil?
+            insert_items(session[:cart_signed_in][session[:user_id].to_s], @order.client_id, get_last_order_by_id(@order.client_id))
+            SendOrder.send_order_email(@client, @order).deliver
+            session[:cart_signed_in] = nil
+            redirect_to root_path
         else
           @order.errors.add("Errors: ", result)
           render '/cart/cart'

@@ -101,7 +101,9 @@
 <%=f.hidden_field :total_price, :value => backup%>
 <%=f.hidden_field :client_id, :value => session[:user_id]%>
 <strong>Total:</strong>
-<%=backup%> + Ship price
+<%=backup%> + Ship price<br>
+    <%=f.label :voucher %>
+    <%=f.text_field :id_voucher%>
 <hr>
     <%=f.submit 'Buy' %>
 <%end%>

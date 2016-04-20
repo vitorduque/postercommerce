@@ -31,6 +31,7 @@ class Facade
   require '/home/vitor/RailsProjects/postercommerce/app/validations/null_client_id.rb'
   require '/home/vitor/RailsProjects/postercommerce/app/models/dao_connection_datas.rb'
   require '/home/vitor/RailsProjects/postercommerce/app/validations/generic_null_validation.rb'
+  require '/home/vitor/RailsProjects/postercommerce/app/validations/voucher_active_validation.rb'
 
   def initialize
     dao_conn_data = DaoConnectionData.new()
@@ -47,6 +48,7 @@ class Facade
     @strategy[Client.to_s] = Hash.new()
     @strategy[Login.to_s] = Hash.new()
     @strategy[Order.to_s] = Hash.new()
+    @strategy[Voucher.to_s] = Hash.new()
 
     @strategy[Poster.to_s]['create'] = Array.new()
     @strategy[Poster.to_s]['create'][0] = NullPosterName.new
@@ -96,6 +98,7 @@ class Facade
     @strategy[Client.to_s]['create'][14] = PasswordLengthValidation.new()
     @strategy[Client.to_s]['create'][15] = ConfirmPasswordValidation.new()
 
+
     @strategy[Client.to_s]['show'] = Array.new()
     @strategy[Client.to_s]['show'][0] = NullClientId.new
 
@@ -116,6 +119,7 @@ class Facade
     @strategy[Order.to_s]['create'] = Array.new()
     @strategy[Order.to_s]['create'][0] = NullShippingMethod.new()
     @strategy[Order.to_s]['create'][1] = NullPaymentMethod.new()
+    @strategy[Order.to_s]['create'][2] = VoucherActive.new()
 
     @strategy[Order.to_s]['list'] = Array.new()
 
@@ -124,6 +128,13 @@ class Facade
 
     @strategy[Order.to_s]['set'] = Array.new
     @strategy[Order.to_s]['show'][0] = GenericNullValidation.new()
+
+    @strategy[Voucher.to_s]['show'] = Array.new()
+    @strategy[Voucher.to_s]['show'][0] = VoucherNullValidation.new()
+
+
+    @strategy[Voucher.to_s]['edit'] = Array.new()
+    @strategy[Voucher.to_s]['edit'][0] = VoucherNullValidation.new()
 
     @strategyResult = ""
   end
@@ -172,13 +183,18 @@ class Facade
     end
 
     if @strategyResult.length == 0
-      @dao[domain.class.to_s].find(domain.id)
+      if domain.class.to_s.eql? "Voucher"
+        @dao[domain.class.to_s].find(domain.id_voucher)
+      else
+        @dao[domain.class.to_s].find(domain.id)
+      end
     else
       @strategyResult
     end
   end
 
   def create (domain)
+
     @strategy[domain.class.to_s]['create'].each do |t|
       teste = t.validate(domain)
       if teste.length != 0
