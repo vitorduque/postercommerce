@@ -6,7 +6,7 @@ To run it:
 
 * Rails version: Rails 4.2.6
 
-* Configuration:
+Configuration:
 * Run postercommerce.sql to create tables and seed the database
 * Modify dao_connection_datas.rb
 * Modify the "require"s
