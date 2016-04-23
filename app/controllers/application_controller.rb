@@ -8,13 +8,17 @@ class ApplicationController < ActionController::Base
   def initialize
     super
     @command = Hash.new
-    @command['list'] = CommandList.new()
-    @command['edit'] = CommandEdit.new()
-    @command['delete'] = CommandDelete.new()
-    @command['show'] = CommandShow.new()
-    @command['create'] = CommandCreate.new()
-    @command['find_by_email'] = CommandFindByEmail.new()
-    @command['set'] = CommandSet.new()
+    @command['list'] = CommandList.new
+    @command['edit'] = CommandEdit.new
+    @command['delete'] = CommandDelete.new
+    @command['show'] = CommandShow.new
+    @command['create'] = CommandCreate.new
+    @command['find_by_email'] = CommandFindByEmail.new
+    @command['set'] = CommandSet.new
+    @command['get_orders_by_id'] = CommandGetOrdersById.new
+    @command['get_last_order_by_id'] = CommandGetLastOrderById.new
+    @command['complain_order_by_id'] = CommandComplainOrderById.new
+
   end
 
 end

@@ -32,6 +32,9 @@ class Facade
   require '/home/vitor/RailsProjects/postercommerce/app/models/dao_connection_datas.rb'
   require '/home/vitor/RailsProjects/postercommerce/app/validations/generic_null_validation.rb'
   require '/home/vitor/RailsProjects/postercommerce/app/validations/voucher_active_validation.rb'
+  require '/home/vitor/RailsProjects/postercommerce/app/validations/order_client_id_null_validation.rb'
+  require '/home/vitor/RailsProjects/postercommerce/app/validations/null_order_id_validation.rb'
+
 
   def initialize
     dao_conn_data = DaoConnectionData.new()
@@ -128,6 +131,19 @@ class Facade
 
     @strategy[Order.to_s]['set'] = Array.new
     @strategy[Order.to_s]['show'][0] = GenericNullValidation.new()
+
+    @strategy[Order.to_s]['get_orders_by_id'] = Array.new
+    @strategy[Order.to_s]['get_orders_by_id'][0] = NullOrderClientId.new
+
+    @strategy[Order.to_s]['get_last_order_by_id'] = Array.new
+    @strategy[Order.to_s]['get_last_order_by_id'][0] = NullOrderClientId.new
+
+    @strategy[Order.to_s]['complain_order_by_id'] = Array.new
+    @strategy[Order.to_s]['complain_order_by_id'][0] = NullOrderId.new
+
+
+    @strategy[Order.to_s]['get_last_order_by_id'] = Array.new
+
 
     @strategy[Voucher.to_s]['show'] = Array.new()
     @strategy[Voucher.to_s]['show'][0] = VoucherNullValidation.new()
@@ -253,6 +269,50 @@ class Facade
 
   end
 
+
+  def get_orders_by_id(domain)
+    @strategy[domain.class.to_s]['get_orders_by_id'].each do |t|
+      teste = t.validate(domain)
+      if teste.length != 0
+        @strategyResult = @strategyResult + " " + teste
+      end
+    end
+    if @strategyResult.length == 0
+      @dao[domain.class.to_s].get_orders(domain.client_id)
+    else
+      return @strategyResult
+    end
+  end
+
+  def get_last_order_by_id(domain)
+    @strategy[domain.class.to_s]['get_last_order_by_id'].each do |t|
+      teste = t.validate(domain)
+      if teste.length != 0
+        @strategyResult = @strategyResult + " " + teste
+      end
+    end
+    if @strategyResult.length == 0
+      @dao[domain.class.to_s].get_last_order(domain.client_id)
+    else
+      return @strategyResult
+    end
+
+  end
+
+  def complain_order_by_id(domain)
+    @strategy[domain.class.to_s]['complain_order_by_id'].each do |t|
+      teste = t.validate(domain)
+      if teste.length != 0
+        @strategyResult = @strategyResult + " " + teste
+      end
+    end
+
+    if @strategyResult.length == 0
+      @dao[domain.class.to_s].set_as_complained(domain.id)
+    else
+      return @strategyResult
+    end
+  end
 
 private
   def voucher_gen

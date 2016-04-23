@@ -1,7 +1,7 @@
 class GenericNullValidation
 
-  def validate(id)
-    if id.nil?
+  def validate(wut)
+    if wut.nil?
        "WTFFFFFFFF"
     else
        ""

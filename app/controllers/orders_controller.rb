@@ -2,9 +2,9 @@ class OrdersController < ApplicationController
   require '/home/vitor/RailsProjects/postercommerce/app/models/order_item_dao.rb'
 
   def index
-
     if session[:signed_in]
-      @orders = get_orders(session[:user_id])
+      #@orders = get_orders(session[:user_id])
+      @orders = @command['get_orders_by_id'].execute(Order.new(client_id: session[:user_id]))
       render 'my_orders'
     else
       redirect_to controller: 'login', action: 'index'
@@ -49,10 +49,11 @@ class OrdersController < ApplicationController
           result2 = @command['edit'].execute(@voucher)
         end
         if result.nil? and result2.nil?
-            insert_items(session[:cart_signed_in][session[:user_id].to_s], @order.client_id, get_last_order_by_id(@order.client_id))
-            SendOrder.send_order_email(@client, @order).deliver
-            session[:cart_signed_in] = nil
-            redirect_to root_path
+          order_id = @command['get_last_order_by_id'].execute(@order)
+          insert_items(session[:cart_signed_in][session[:user_id].to_s], @order.client_id, order_id)
+          SendOrder.send_order_email(@client, @order).deliver
+          session[:cart_signed_in] = nil
+          redirect_to root_path
         else
           @order.errors.add("Errors: ", result)
           render '/cart/cart'
@@ -66,6 +67,7 @@ class OrdersController < ApplicationController
 
   def cancel_order
     @order = get_order_by_id(params[:id])
+
     get_client
     if session[:user_id].eql? @order.client_id
       OrderCanceled.send_canceled_email(@client, @order).deliver
@@ -81,7 +83,7 @@ class OrdersController < ApplicationController
     get_client
     if session[:user_id].eql? @order.client_id
       ComplainOrder.send_complained_email(@client, @order).deliver
-      complain_order_by_id(params[:id])
+      complain_order_by_id(Order.new(id: params[:id]))
       redirect_to controller: 'orders', action: 'index'
     else
       index
@@ -98,15 +100,34 @@ private
     end
   end
 
-  def complain_order_by_id(order_id)
-    dao = OrderDao.new(OpenConnection.new('localhost', 'root', 'root', '3306', 'appmysql_development'))
-    dao.set_as_complained(order_id)
+  #Call to command array
+  def complain_order_by_id(order)
+    @command['complain_order_by_id'].execute(order)
   end
 
-  def get_orders(client_id)
+  def cancel_order_by_id(order_id)
     dao = OrderDao.new(OpenConnection.new('localhost', 'root', 'root', '3306', 'appmysql_development'))
-    dao.get_orders(client_id)
+    dao.cancel_order(order_id)
   end
+
+  #Call to command array
+  def get_order_by_id(id)
+    @command['show'].execute(Order.new(id: params[:id]))
+    #dao = OrderDao.new(OpenConnection.new('localhost', 'root', 'root', '3306', 'appmysql_development'))
+    #dao.find(id)
+  end
+
+  #Call to command array
+  def get_client
+    if session[:signed_in]
+      #dao = ClientDao.new(OpenConnection.new('localhost', 'root', 'root', '3306', 'appmysql_development'))
+      #@client = dao.find(session[:user_id])
+      #@client = @command['show'].execute(Client.new(id: session[:user_id]))
+      @client = @command['show'].execute(Client.new(id: session[:user_id].to_s))
+    end
+  end
+
+
 
   def insert_items(cart, client_id, order_id)
     dao_item = ItemDao.new(OpenConnection.new('localhost', 'root', 'root', '3306', 'appmysql_development'))
@@ -118,26 +139,5 @@ private
     dao_item.find_items(client_id, order_id)
   end
 
-  def get_last_order_by_id(id)
-    dao = OrderDao.new(OpenConnection.new('localhost', 'root', 'root', '3306', 'appmysql_development'))
-    dao.get_last_order(id)
-  end
-
-  def get_order_by_id(id)
-    dao = OrderDao.new(OpenConnection.new('localhost', 'root', 'root', '3306', 'appmysql_development'))
-    dao.find(id)
-  end
-
-  def get_client
-    if session[:signed_in]
-      dao = ClientDao.new(OpenConnection.new('localhost', 'root', 'root', '3306', 'appmysql_development'))
-      @client = dao.find(session[:user_id])
-    end
-  end
-
-  def cancel_order_by_id(order_id)
-    dao = OrderDao.new(OpenConnection.new('localhost', 'root', 'root', '3306', 'appmysql_development'))
-    dao.cancel_order(order_id)
-  end
 
 end

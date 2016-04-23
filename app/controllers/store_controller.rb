@@ -2,6 +2,7 @@ class StoreController < ApplicationController
 
 
   def index
+
     @cart_item = CartItem.new
     if user_signed_in?
       if session[:cart_signed_in].nil?
