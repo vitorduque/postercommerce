@@ -7,9 +7,10 @@ To run it:
 * Rails version: Rails 4.2.6
 
 * Configuration:
-Run db.sql to create tables and seed the database
-Modify dao_connection_datas.rb
-Run it
+* Run postercommerce.sql to create tables and seed the database
+* Modify dao_connection_datas.rb
+* Modify the "require"s
+* Run it
 
 
 == Something you must need to know
@@ -27,4 +28,3 @@ Run it
                 * MVC architectural pattern
 
 * Documentation is still being made -in portuguese- (see on "software specifications" folder) :D
-
