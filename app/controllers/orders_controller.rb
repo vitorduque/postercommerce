@@ -71,7 +71,7 @@ class OrdersController < ApplicationController
     get_client
     if session[:user_id].eql? @order.client_id
       OrderCanceled.send_canceled_email(@client, @order).deliver
-      cancel_order_by_id(params[:id])
+      cancel_order_by_id(Order.new(id: params[:id]))
       redirect_to controller: 'orders', action: 'index'
     else
       index
@@ -105,9 +105,10 @@ private
     @command['complain_order_by_id'].execute(order)
   end
 
-  def cancel_order_by_id(order_id)
-    dao = OrderDao.new(OpenConnection.new('localhost', 'root', 'root', '3306', 'appmysql_development'))
-    dao.cancel_order(order_id)
+  def cancel_order_by_id(order)
+    @command['cancel_order_by_id'].execute(order)
+    #dao = OrderDao.new(OpenConnection.new('localhost', 'root', 'root', '3306', 'appmysql_development'))
+    #dao.cancel_order(order_id)
   end
 
   #Call to command array
@@ -126,8 +127,6 @@ private
       @client = @command['show'].execute(Client.new(id: session[:user_id].to_s))
     end
   end
-
-
 
   def insert_items(cart, client_id, order_id)
     dao_item = ItemDao.new(OpenConnection.new('localhost', 'root', 'root', '3306', 'appmysql_development'))

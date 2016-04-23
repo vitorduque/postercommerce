@@ -18,7 +18,7 @@ class ApplicationController < ActionController::Base
     @command['get_orders_by_id'] = CommandGetOrdersById.new
     @command['get_last_order_by_id'] = CommandGetLastOrderById.new
     @command['complain_order_by_id'] = CommandComplainOrderById.new
-
+    @command['cancel_order_by_id'] = CommandCancelOrderById.new
   end
 
 end

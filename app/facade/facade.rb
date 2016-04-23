@@ -141,9 +141,8 @@ class Facade
     @strategy[Order.to_s]['complain_order_by_id'] = Array.new
     @strategy[Order.to_s]['complain_order_by_id'][0] = NullOrderId.new
 
-
-    @strategy[Order.to_s]['get_last_order_by_id'] = Array.new
-
+    @strategy[Order.to_s]['cancel_order_by_id'] = Array.new
+    @strategy[Order.to_s]['cancel_order_by_id'][0] = NullOrderId.new
 
     @strategy[Voucher.to_s]['show'] = Array.new()
     @strategy[Voucher.to_s]['show'][0] = VoucherNullValidation.new()
@@ -313,6 +312,23 @@ class Facade
       return @strategyResult
     end
   end
+
+  def cancel_order_by_id(domain)
+    @strategy[domain.class.to_s]['cancel_order_by_id'].each do |t|
+      teste = t.validate(domain)
+      if teste.length != 0
+        @strategyResult = @strategyResult + " " + teste
+      end
+    end
+
+    if @strategyResult.length == 0
+      @dao[domain.class.to_s].cancel_order(domain.id)
+    else
+      return @strategyResult
+    end
+
+  end
+
 
 private
   def voucher_gen
