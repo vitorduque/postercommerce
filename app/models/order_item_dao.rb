@@ -38,11 +38,36 @@ class ItemDao
       item.size = row['size']
       item.amount = row['amount']
       item.name = row['name']
-    
+
       items << item
     end
 
     db.close
     items
   end
+
+  def retrieve_graph(date)
+    db = @conn.open
+    items = Array.new
+
+    result = db.query("select orders_has_posters.orders_id, orders_has_posters.posters_id, orders_has_posters.size, orders.date
+                        from orders_has_posters
+                        JOIN orders
+                        ON orders_has_posters.orders_id = orders.id
+                        where orders.date between '#{date.begin}' AND '#{date.end}'")
+    result.each do |row|
+      item = OrderItem.new
+      item.orders_id = row['orders_id']
+      item.orders_clients_id = row['orders_clients_id']
+      item.posters_id = row['posters_id']
+      item.size = row['size']
+      items << item
+    end
+
+    db.close
+    items
+
+  end
+
+
 end

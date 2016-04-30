@@ -1,0 +1,20 @@
+<%= form_for @graph,
+  url: url_for(controller: 'admin', action: 'gerenate_graph'),
+  method: :post, html: { class: 'form-control' } do |f| %>
+  <% if flash[:notice] %>
+    <div class="notice"><%= flash[:notice] %></div>
+  <% end %>
+  <div class="field">
+    <%= f.label :begin %>
+    <%= date_field(:graph, :begin) %>
+  </div>
+  <div class="field">
+    <%= f.label :end %>
+    <%= date_field(:graph, :end) %>
+  </div>
+  <div class='actions'>
+  <%= f.submit 'Generate graph'  %>
+  </div>
+  <br>
+  <%=link_to 'back', controller: 'admin'%>
+<% end %>

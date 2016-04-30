@@ -1,0 +1,10 @@
+Between:  <strong><%=@graph.begin%></strong> and <strong><%=@graph.end%></strong><br>
+<%=image_tag(Gchart.bar(size: '500x600',
+                        data: [10,20,40,67,100,600],
+                        axis_with_labels: ['x', 'y'],
+                        :legend => ['1 - ', '2 - ','3 - ','4 - ','5 - ','6 - '],
+                        axis_labels: [['1', '2', '3', '4', '5', '6']],
+                        axis_range: [nil, [0,600,50]] ))%><br>
+
+
+<%=link_to 'back', controller:'admin'%>
