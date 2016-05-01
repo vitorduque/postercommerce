@@ -30,6 +30,7 @@ class AdminController < ApplicationController
   end
 
   def gerenate_graph
+    dao_conn_data = DaoConnectionData.new()
     @graph = Graph.new(params.require(:graph).permit(:begin, :end))
     if @graph.begin.blank? or @graph.end.blank?
       @graph.errors.add("Error:", "Select a range date!")
@@ -38,15 +39,15 @@ class AdminController < ApplicationController
     else
       @graph.begin << " 00:00:00"
       @graph.end << " 23:59:59"
-      order_items = OrderItem.new
-      dao = ItemDao.new(OpenConnection.new('localhost', 'root', 'root', '3306', 'appmysql_development'))
-      order_items = dao.retrieve_graph(@graph)
-      if order_items.length.eql? 0
+      dao = ItemDao.new(OpenConnection.new(dao_conn_data.host, dao_conn_data.user,dao_conn_data.password,dao_conn_data.port,dao_conn_data.database_name))
+      trash_return = dao.retrieve_graph(@graph)
+      if trash_return[0].length.eql? 0
         flash[:notice] = 'No datas received'
         redirect_to controller:'admin', action: 'analisys'
       else
-        binding.pry
-        @graph.mine_order_items(order_items)
+        @graph.mine_order_items(trash_return[0], trash_return[1])
+        @names = @graph.names
+        @amount = @graph.amount
         render 'graph_view'
       end
     end

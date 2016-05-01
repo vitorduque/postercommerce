@@ -49,6 +49,7 @@ class ItemDao
   def retrieve_graph(date)
     db = @conn.open
     items = Array.new
+    orders_id = Array.new
 
     result = db.query("select orders_has_posters.orders_id, orders_has_posters.posters_id, orders_has_posters.size, orders.date
                         from orders_has_posters
@@ -64,9 +65,15 @@ class ItemDao
       items << item
     end
 
-    db.close
-    items
+    result = db.query("select * from orders where orders.date between '#{date.begin}' AND '#{date.end}';")
 
+    result.each do |row|
+      id = row['id']
+      orders_id << id
+    end
+
+    db.close
+    return items, orders_id
   end
 
 

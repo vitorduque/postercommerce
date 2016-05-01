@@ -1,10 +1,34 @@
 Between:  <strong><%=@graph.begin%></strong> and <strong><%=@graph.end%></strong><br>
 <%=image_tag(Gchart.bar(size: '500x600',
-                        data: [10,20,40,67,100,600],
+                        data: @amount,
+                        max_value: @amount.first,
+                        min_value: 0,
                         axis_with_labels: ['x', 'y'],
-                        :legend => ['1 - ', '2 - ','3 - ','4 - ','5 - ','6 - '],
-                        axis_labels: [['1', '2', '3', '4', '5', '6']],
-                        axis_range: [nil, [0,600,50]] ))%><br>
+                        #legend: ['1 - ', '2 - ','3 - ','4 - ','5 - ','6 - '],
+                        #axis_labels: [['1', '2', '3', '4', '5', '6']],
+                        axis_range: [nil, [0,100,5]]
+                        ))%>
+
+<table>
+  <thead>
+    <tr>
+      <th>Bar</th>
+      <th>Combination</th>
+      <th>Amount sold</th>
+    </tr>
+  </thead>
+  <tbody>
+
+    <%@names.each_with_index do |name,index|%>
+    <tr>
+      <td><%=index%></td>
+      <td><%=name%></td>
+      <td><%=@amount[index]%></td>
+    </tr>
+    <%end%>
+
+  </tbody>
+</table>
 
 
 <%=link_to 'back', controller:'admin'%>
