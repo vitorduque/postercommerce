@@ -1,7 +1,7 @@
 class AdminController < ApplicationController
   require '/home/vitor/RailsProjects/postercommerce/app/validations/auth_admin.rb'
   require '/home/vitor/RailsProjects/postercommerce/app/models/order_item_dao.rb'
-
+  require '/home/vitor/RailsProjects/postercommerce/app/models/dao_connection_datas.rb'
   def index
     if session[:admin_signed_in] == true
     render 'index'
