@@ -5,7 +5,16 @@ class ClientsController < ApplicationController
   end
 
   def create
+
+    #client VO
     @client = Client.new(params.require(:client).permit(:id, :name, :email, :password,:cpf, :street, :number, :neighborhood, :city, :state, :zip_code, :complement, :confirm_password))
+
+    address = Address.new(@client.complement, @client.number, @client.street, @client.neighborhood, @client.city, @client.state, @client.zip_code)
+    login = Login.new_with_confirm(@client.email, @client.password, @client.confirm_password)
+
+    #The real client object
+    @client_object = ClientObject.new(@client.name, @client.cpf, login, address)
+
 
     result = @command['create'].execute(@client)
 
