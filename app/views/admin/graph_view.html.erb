@@ -31,4 +31,50 @@ Between:  <strong><%=@graph.begin%></strong> and <strong><%=@graph.end%></strong
 </table>
 
 <hr>
+
+<%=image_tag(Gchart.line(data: [@graph.male, @graph.female],
+                         max_value: @graph.max + 1,
+                         :bar_colors => ['0088FF', 'FF69B4'],
+                         min_value: 0,
+                         axis_with_labels: ['x', 'y'],
+                         axis_range: [nil, [0,100,5]],
+                         size: '500x600',
+                         axis_labels: [["Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec"]],
+                         legend:['Male', 'Female'],
+                         legend_position: 'bottom'
+                         ))%><br>
+<table>
+  <thead>
+    <tr>
+      <th>Sex</th>
+      <th>Jan</th>
+      <th>Feb</th>
+      <th>Mar</th>
+      <th>Apr</th>
+      <th>May</th>
+      <th>Jun</th>
+      <th>Jul</th>
+      <th>Aug</th>
+      <th>Sep</th>
+      <th>Oct</th>
+      <th>Nov</th>
+      <th>Dec</th>
+    </tr>
+  </thead>
+  <tbody>
+    <td>Male</td>
+    <%@graph.male.each do |m|%>
+      <td><%=m%>  </td>
+    <%end%>
+    <tr>
+      <td>Female</td>
+      <%@graph.female.each do |f|%>
+        <td><%=f%>  </td>
+      <%end%>
+    </tr>
+  </tbody>
+</table>
+
+<hr>
+<br>
 <%=link_to 'back', controller:'admin'%>

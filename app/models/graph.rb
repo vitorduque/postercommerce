@@ -1,7 +1,33 @@
 class Graph
   include ActiveModel::Model
 
-  attr_accessor :begin, :end, :names, :amount, :male, :female
+  attr_accessor :begin, :end, :names, :amount, :male, :female, :count, :order_date, :max
+
+
+  def graph_category_sex(male, female)
+    @male = Array.new(12,0)
+    @female = Array.new(12,0)
+    @max = 0
+
+
+    male.each do |m|
+
+      if m.count > @max
+        @max = m.count
+      end
+      m.order_date.delete! '0'
+      @male[(m.order_date.to_i) - 1] = m.count
+    end
+
+    female.each do |f|
+      if f.count > @max
+        @max = f.count
+      end
+      f.order_date.delete! '0'
+      @female[(f.order_date.to_i) - 1] = f.count
+    end
+
+  end
 
 
 

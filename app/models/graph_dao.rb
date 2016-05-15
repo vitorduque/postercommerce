@@ -54,6 +54,8 @@ class GraphDao
 
   def retrieve_graph_two
     db = @conn.open
+    male = Array.new
+    female = Array.new
 
     #male buys
     result = db.query("select DATE_FORMAT(date, '%m') as order_date, count(*) as count
@@ -62,6 +64,10 @@ class GraphDao
                         group by order_date")
 
     result.each do |row|
+      graph = Graph.new
+      graph.order_date = row['order_date']
+      graph.count = row['count']
+      male << graph
     end
 
     #female buys
@@ -71,7 +77,13 @@ class GraphDao
                         group by order_date")
 
     result.each do |row|
+      graph = Graph.new
+      graph.order_date = row['order_date']
+      graph.count = row['count']
+      female << graph
     end
+    return male, female
+
   end
 
 
@@ -79,6 +91,7 @@ class GraphDao
     if option.eql? 1
       retrieve_graph_one(date)
     elsif option.eql? 2
+      retrieve_graph_two
     end
   end
 
