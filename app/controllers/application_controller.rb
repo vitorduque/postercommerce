@@ -4,7 +4,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
 
     require '/home/vitor/RailsProjects/postercommerce/app/commands/command_admin_set.rb'
-
+require '/home/vitor/RailsProjects/postercommerce/app/commands/command_graphs.rb'
   def initialize
     super
     @command = Hash.new
@@ -19,6 +19,7 @@ class ApplicationController < ActionController::Base
     @command['get_last_order_by_id'] = CommandGetLastOrderById.new
     @command['complain_order_by_id'] = CommandComplainOrderById.new
     @command['cancel_order_by_id'] = CommandCancelOrderById.new
+    @command['graphs'] = CommandGraph.new
   end
 
 end

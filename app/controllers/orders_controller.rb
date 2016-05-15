@@ -5,6 +5,7 @@ class OrdersController < ApplicationController
     if session[:signed_in]
       #@orders = get_orders(session[:user_id])
       @orders = @command['get_orders_by_id'].execute(Order.new(client_id: session[:user_id]))
+      
       render 'my_orders'
     else
       redirect_to controller: 'login', action: 'index'

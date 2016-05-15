@@ -78,7 +78,7 @@ class PosterDao
           '#{poster.price_small}',
           '#{poster.price_medium}',
           '#{poster.price_large}',
-          '#{poster.category}',
+          '#{poster.category.category}',
           '#{poster.active}',
           '#{poster.created_at}',
           '#{poster.updated_at}',
@@ -96,7 +96,7 @@ class PosterDao
     price_small = '#{poster.price_small}',
     price_medium = ' #{poster.price_medium}',
     price_large = '#{poster.price_large}',
-    category = '#{poster.category}',
+    category = '#{poster.category.category}',
     active = #{poster.active},
     updated_at = '#{updated_at}',
     image = '#{poster.image}' where id = #{poster.id} ")

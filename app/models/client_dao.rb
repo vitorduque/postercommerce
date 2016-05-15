@@ -9,19 +9,20 @@ class ClientDao
     client.updated_at = Time.now.to_s(:db)
     db = @connection.open
     db.query("insert into clients
-    (name, email, password, cpf, street, number, neighborhood, city,
+    (name, gender ,email, password, cpf, street, number, neighborhood, city,
     state, zip_code, complement, created_at, updated_at)
           VALUES('#{client.name}',
-          '#{client.email}',
-          '#{client.password}',
+          '#{client.gender}',
+          '#{client.login.email}',
+          '#{client.login.password}',
           '#{client.cpf}',
-          '#{client.street}',
-          '#{client.number}',
-          '#{client.neighborhood}',
-          '#{client.city}',
-          '#{client.state}',
-          '#{client.zip_code}',
-          '#{client.complement}',
+          '#{client.address.street}',
+          '#{client.address.number}',
+          '#{client.address.neighborhood}',
+          '#{client.address.city}',
+          '#{client.address.state}',
+          '#{client.address.zip_code}',
+          '#{client.address.complement}',
           '#{client.created_at}',
           '#{client.updated_at}' )")
   end
@@ -29,7 +30,7 @@ class ClientDao
   def find(id)
     db = @connection.open
     unique_result = db.query("SELECT * FROM clients WHERE id = #{id}")
-    client = Client.new()
+    client = Client.new
 
     unique_result.each do |row|
       client.id = row['id']
@@ -40,8 +41,8 @@ class ClientDao
       client.neighborhood = row['neighborhood']
       client.city = row['city']
       client.state = row['state']
-      client.zip_code = row['zip_code']
       client.complement =  row['complement']
+      client.zip_code = row['zip_code']
     end
     db.close
     client
@@ -97,13 +98,13 @@ class ClientDao
   def edit(client)
     updated_at = updated_at = Time.now.to_s(:db)
     db = @connection.open
-    db.query("update clients set street = '#{client.street}',
-    number = '#{client.number}',
-    neighborhood = '#{client.neighborhood}',
-    city = '#{client.city}',
-    state = '#{client.state}',
-    zip_code = '#{client.zip_code}',
-    complement = '#{client.complement}',
+    db.query("update clients set street = '#{client.address.street}',
+    number = '#{client.address.number}',
+    neighborhood = '#{client.address.neighborhood}',
+    city = '#{client.address.city}',
+    state = '#{client.address.state}',
+    zip_code = '#{client.address.zip_code}',
+    complement = '#{client.address.complement}',
     updated_at = '#{updated_at}'
     where id = '#{client.id}'")
   end

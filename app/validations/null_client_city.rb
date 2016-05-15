@@ -1,7 +1,7 @@
 class NullClientCity
 
   def validate(client)
-    if client.city.length == 0
+    if client.address.city.length == 0
       "You must live in a city"
     else
       ""

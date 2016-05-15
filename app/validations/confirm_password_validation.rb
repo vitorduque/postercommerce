@@ -1,7 +1,7 @@
 class ConfirmPasswordValidation
 
   def validate(client)
-    if client.password.eql? client.confirm_password
+    if client.login.password.eql? client.login.confirm_password
       ""
     else
       "Passwords don't match"

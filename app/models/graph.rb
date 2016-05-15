@@ -1,12 +1,14 @@
 class Graph
   include ActiveModel::Model
 
-  attr_accessor :begin, :end, :names, :amount
+  attr_accessor :begin, :end, :names, :amount, :male, :female
+
+
 
   def mine_order_items(items, orders_id)
-    @main_hash ||= Hash.new
-    @score = Array.new
-    @filter = Array.new
+    main_hash ||= Hash.new
+    score = Array.new
+    filter_hash = Array.new
     @sum = Array.new
     @name = Array.new
     sum = 0
@@ -15,34 +17,34 @@ class Graph
 
     #Create a hash with arrays of items of the same order
     orders_id.each_with_index do |order_id, index|
-    @main_hash.merge!({order_id: order_id})
-    @main_hash[order_id] = Hash.new
+    main_hash.merge!({order_id: order_id})
+    main_hash[order_id] = Hash.new
       items.each_with_index do |item, index|
         if item.orders_id.eql? order_id
           item_array << [item.posters_id, item.size]
           name << "Id: #{item.posters_id} Size: #{item.size}/"
         end
       end
-      @main_hash[order_id].merge!({content: item_array, name: name})
+      main_hash[order_id].merge!({content: item_array, name: name})
       item_array = Array.new
       name = ""
     end
 
     #Unify the content in hash
-    @backup = @main_hash.to_a
+    @backup = main_hash.to_a
     arr = Array.new
-    @main_hash.each{|key, val| arr.include?(val) ? @main_hash.delete(key) : arr << val }
+    main_hash.each{|key, val| arr.include?(val) ? main_hash.delete(key) : arr << val }
 
     #Filter the combinations
-    @main_hash.each do |combination|
-      if @main_hash.first.eql? combination
+    main_hash.each do |combination|
+      if main_hash.first.eql? combination
         next
       end
-      @filter << combination[1][:content]
+      filter_hash << combination[1][:content]
     end
 
     #Count the combinations
-    @filter.each_with_index do |wut, index|
+    filter_hash.each_with_index do |wut, index|
       @backup.each do |backup|
         if @backup.first.eql? backup
           next
@@ -56,12 +58,12 @@ class Graph
     end
 
     #Merge de amount to main_hash
-    @backup = @main_hash.to_a
-    @main_hash.each_with_index do |hash,index|
-      if @main_hash.first.eql? hash
+    @backup = main_hash.to_a
+    main_hash.each_with_index do |hash,index|
+      if main_hash.first.eql? hash
         next
       end
-      @main_hash[@backup[index][0]].merge!({amount: @sum[index-1]})
+      main_hash[@backup[index][0]].merge!({amount: @sum[index-1]})
     end
 
     #Fill the array name

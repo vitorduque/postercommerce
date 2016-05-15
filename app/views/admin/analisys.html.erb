@@ -4,6 +4,17 @@
   <% if flash[:notice] %>
     <div class="notice"><%= flash[:notice] %></div>
   <% end %>
+
+  <%  if @graph.errors.any? %>
+    <div id="error_explanation">
+
+      <ul>
+      <% @graph.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end%></ul>
+    </div>
+  <% end %>
+
   <div class="field">
     <%= f.label :begin %>
     <%= date_field(:graph, :begin) %>
@@ -16,5 +27,7 @@
   <%= f.submit 'Generate graph'  %>
   </div>
   <br>
+
   <%=link_to 'back', controller: 'admin'%>
+
 <% end %>

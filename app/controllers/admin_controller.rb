@@ -30,28 +30,18 @@ class AdminController < ApplicationController
   end
 
   def gerenate_graph
-    dao_conn_data = DaoConnectionData.new()
     @graph = Graph.new(params.require(:graph).permit(:begin, :end))
-    if @graph.begin.blank? or @graph.end.blank?
-      @graph.errors.add("Error:", "Select a range date!")
-      flash[:notice] = 'Select a date range'
-      redirect_to controller:'admin', action: 'analisys'
+    @graph.begin << " 00:00:00"
+    @graph.end << " 23:59:59"
+    result1 = @command['graphs'].execute(@graph, 1)
+    
+    if result1.is_a?(String)
+      @graph.errors.add("Errors: ", result1)
+      render 'analisys'
     else
-      @graph.begin << " 00:00:00"
-      @graph.end << " 23:59:59"
-      dao = ItemDao.new(OpenConnection.new(dao_conn_data.host, dao_conn_data.user,dao_conn_data.password,dao_conn_data.port,dao_conn_data.database_name))
-      trash_return = dao.retrieve_graph(@graph)
-      if trash_return[0].length.eql? 0
-        flash[:notice] = 'No datas received'
-        redirect_to controller:'admin', action: 'analisys'
-      else
-        @graph.mine_order_items(trash_return[0], trash_return[1])
-        @names = @graph.names
-        @amount = @graph.amount
-        render 'graph_view'
-      end
+      @graph.mine_order_items(result1[0], result1[1])
+      render 'graph_view'
     end
-
 
   end
 

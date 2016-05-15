@@ -1,7 +1,7 @@
 Between:  <strong><%=@graph.begin%></strong> and <strong><%=@graph.end%></strong><br>
 <%=image_tag(Gchart.bar(size: '500x600',
-                        data: @amount,
-                        max_value: @amount.first,
+                        data: @graph.amount,
+                        max_value: @graph.amount.first,
                         min_value: 0,
                         axis_with_labels: ['x', 'y'],
                         #legend: ['1 - ', '2 - ','3 - ','4 - ','5 - ','6 - '],
@@ -19,16 +19,16 @@ Between:  <strong><%=@graph.begin%></strong> and <strong><%=@graph.end%></strong
   </thead>
   <tbody>
 
-    <%@names.each_with_index do |name,index|%>
+    <%@graph.names.each_with_index do |name,index|%>
     <tr>
       <td><%=index%></td>
       <td><%=name%></td>
-      <td><%=@amount[index]%></td>
+      <td><%=@graph.amount[index]%></td>
     </tr>
     <%end%>
 
   </tbody>
 </table>
 
-
+<hr>
 <%=link_to 'back', controller:'admin'%>

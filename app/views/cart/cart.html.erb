@@ -91,7 +91,7 @@
       <%=@client.city%>, <%=@client.state%><br>
       <%=@client.zip_code%><br>
       Complement: <%=@client.complement%><br>
-      <%=link_to 'Change my address', controller: 'clients', action: 'edit', id: @client.id   %>
+      <%=link_to 'Change my address', controller: 'client_objects', action: 'edit', id: @client.id   %>
     <%end%>
 <hr>
     <strong>Payment method</strong><br>

@@ -23,6 +23,10 @@
     <%= f.label :name %>
     <%= f.text_field :name %>
   </div>
+  <div>
+    <%=f.radio_button(:gender, "Male")%> Male
+    <%=f.radio_button(:gender, "Female")%> Female<br>
+  </div>
   <div class="field">
     <%= f.label :email %>
     <%= f.text_field :email %>

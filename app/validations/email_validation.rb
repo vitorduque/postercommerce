@@ -3,7 +3,7 @@ class EmailValidation
   def validate(client)
 
     begin
-      if client.email.include? "@"
+      if client.login.email.include? "@"
         ""
       else
         "Email must have '@'"

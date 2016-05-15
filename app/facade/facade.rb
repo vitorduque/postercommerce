@@ -34,7 +34,10 @@ class Facade
   require '/home/vitor/RailsProjects/postercommerce/app/validations/voucher_active_validation.rb'
   require '/home/vitor/RailsProjects/postercommerce/app/validations/order_client_id_null_validation.rb'
   require '/home/vitor/RailsProjects/postercommerce/app/validations/null_order_id_validation.rb'
-
+  require '/home/vitor/RailsProjects/postercommerce/app/validations/client_image_validation.rb'
+  require '/home/vitor/RailsProjects/postercommerce/app/validations/client_gender_validation.rb'
+  require '/home/vitor/RailsProjects/postercommerce/app/validations/graph_date.rb'
+  require '/home/vitor/RailsProjects/postercommerce/app/validations/graph_return.rb'
 
   def initialize
     dao_conn_data = DaoConnectionData.new()
@@ -44,6 +47,11 @@ class Facade
     @dao[Login.to_s] = LoginDao.new(OpenConnection.new(dao_conn_data.host, dao_conn_data.user,dao_conn_data.password,dao_conn_data.port,dao_conn_data.database_name))
     @dao[Order.to_s] = OrderDao.new(OpenConnection.new(dao_conn_data.host, dao_conn_data.user,dao_conn_data.password,dao_conn_data.port,dao_conn_data.database_name))
     @dao[Voucher.to_s] = VoucherDao.new(OpenConnection.new(dao_conn_data.host, dao_conn_data.user,dao_conn_data.password,dao_conn_data.port,dao_conn_data.database_name))
+    @dao[Graph.to_s] = GraphDao.new(OpenConnection.new(dao_conn_data.host, dao_conn_data.user,dao_conn_data.password,dao_conn_data.port,dao_conn_data.database_name))
+
+    #Objects
+    @dao[ClientObject.to_s] = ClientDao.new(OpenConnection.new(dao_conn_data.host, dao_conn_data.user,dao_conn_data.password,dao_conn_data.port,dao_conn_data.database_name))
+    @dao[PosterObject.to_s] = PosterDao.new(OpenConnection.new(dao_conn_data.host, dao_conn_data.user,dao_conn_data.password,dao_conn_data.port,dao_conn_data.database_name))
 
     @strategy = Hash.new()
 
@@ -52,71 +60,78 @@ class Facade
     @strategy[Login.to_s] = Hash.new()
     @strategy[Order.to_s] = Hash.new()
     @strategy[Voucher.to_s] = Hash.new()
+    @strategy[Graph.to_s] = Hash.new
 
-    @strategy[Poster.to_s]['create'] = Array.new()
-    @strategy[Poster.to_s]['create'][0] = NullPosterName.new
-    @strategy[Poster.to_s]['create'][1] = PriceSmallPoster.new
-    @strategy[Poster.to_s]['create'][2] = PriceMediumPoster.new
-    @strategy[Poster.to_s]['create'][3] = PriceLargePoster.new
-    @strategy[Poster.to_s]['create'][4] = SmallPriceNumValidation.new
-    @strategy[Poster.to_s]['create'][5] = MediumPriceNumValidation.new
-    @strategy[Poster.to_s]['create'][6] = LargePriceNumValidation.new
-    @strategy[Poster.to_s]['create'][7] = ImagePresenceValidation.new
-    @strategy[Poster.to_s]['create'][8] = PhotoExtensionValidation.new
+    @strategy[ClientObject.to_s] = Hash.new
+    @strategy[PosterObject.to_s] = Hash.new
 
-    @strategy[Poster.to_s]['edit'] = Array.new()
-    @strategy[Poster.to_s]['edit'][0] = IDPosterValidation.new
-    @strategy[Poster.to_s]['edit'][1] = NullPosterName.new
-    @strategy[Poster.to_s]['edit'][2] = PriceSmallPoster.new
-    @strategy[Poster.to_s]['edit'][3] = PriceMediumPoster.new
-    @strategy[Poster.to_s]['edit'][4] = PriceLargePoster.new
-    @strategy[Poster.to_s]['edit'][5] = SmallPriceNumValidation.new
-    @strategy[Poster.to_s]['edit'][6] = MediumPriceNumValidation.new
-    @strategy[Poster.to_s]['edit'][7] = LargePriceNumValidation.new
-    @strategy[Poster.to_s]['edit'][8] = ImagePresenceValidation.new
-    @strategy[Poster.to_s]['edit'][9] = PhotoExtensionValidation.new
-
-    @strategy[Poster.to_s]['delete'] = Array.new()
-    @strategy[Poster.to_s]['delete'][0] = IDPosterValidation.new
-
-    @strategy[Poster.to_s]['show'] = Array.new()
-    @strategy[Poster.to_s]['show'][0] = IDPosterValidation.new
+    @strategy[PosterObject.to_s]['create'] = Array.new()
+    @strategy[PosterObject.to_s]['create'][0] = PhotoExtensionValidation.new
+    @strategy[PosterObject.to_s]['create'][1] = NullPosterName.new
+    @strategy[PosterObject.to_s]['create'][2] = PriceSmallPoster.new
+    @strategy[PosterObject.to_s]['create'][3] = PriceMediumPoster.new
+    @strategy[PosterObject.to_s]['create'][4] = PriceLargePoster.new
+    @strategy[PosterObject.to_s]['create'][5] = SmallPriceNumValidation.new
+    @strategy[PosterObject.to_s]['create'][6] = MediumPriceNumValidation.new
+    @strategy[PosterObject.to_s]['create'][7] = LargePriceNumValidation.new
+    @strategy[PosterObject.to_s]['create'][8] = ImagePresenceValidation.new
+    @strategy[PosterObject.to_s]['create'][9] = ClientImageValidation.new
 
 
-    @strategy[Client.to_s]['create'] = Array.new()
-    @strategy[Client.to_s]['create'][0] = NullClientName.new()
-    @strategy[Client.to_s]['create'][1] = EmailPresenceValidation.new()
-    @strategy[Client.to_s]['create'][2] = EmailValidation.new()
-    @strategy[Client.to_s]['create'][3] = CpfLengthValidation.new()
-    @strategy[Client.to_s]['create'][4] = CpfNumberValidation.new()
-    @strategy[Client.to_s]['create'][5] = NullClientStreet.new()
-    @strategy[Client.to_s]['create'][6] = NullClientNeighborhood.new()
-    @strategy[Client.to_s]['create'][7] = NullClientNumber.new()
-    @strategy[Client.to_s]['create'][8] = ClientNumberValidation.new()
-    @strategy[Client.to_s]['create'][9] = ExistingEmailValidation.new()
-    @strategy[Client.to_s]['create'][10] = ExistingCpfValidation.new()
-    @strategy[Client.to_s]['create'][11] = NullClientCity.new()
-    @strategy[Client.to_s]['create'][12] = NullClientState.new()
-    @strategy[Client.to_s]['create'][13] = NullClientZipCode.new()
-    @strategy[Client.to_s]['create'][14] = PasswordLengthValidation.new()
-    @strategy[Client.to_s]['create'][15] = ConfirmPasswordValidation.new()
+    @strategy[PosterObject.to_s]['edit'] = Array.new()
+    @strategy[PosterObject.to_s]['edit'][0] = PhotoExtensionValidation.new
+    @strategy[PosterObject.to_s]['edit'][1] = NullPosterName.new
+    @strategy[PosterObject.to_s]['edit'][2] = PriceSmallPoster.new
+    @strategy[PosterObject.to_s]['edit'][3] = PriceMediumPoster.new
+    @strategy[PosterObject.to_s]['edit'][4] = PriceLargePoster.new
+    @strategy[PosterObject.to_s]['edit'][5] = SmallPriceNumValidation.new
+    @strategy[PosterObject.to_s]['edit'][6] = MediumPriceNumValidation.new
+    @strategy[PosterObject.to_s]['edit'][7] = LargePriceNumValidation.new
+    @strategy[PosterObject.to_s]['edit'][8] = ImagePresenceValidation.new
+    @strategy[PosterObject.to_s]['edit'][9] = IDPosterValidation.new
+    @strategy[PosterObject.to_s]['edit'][9] = ClientImageValidation.new
 
+    @strategy[PosterObject.to_s]['delete'] = Array.new()
+    @strategy[PosterObject.to_s]['delete'][0] = IDPosterValidation.new
+
+    @strategy[PosterObject.to_s]['show'] = Array.new()
+    @strategy[PosterObject.to_s]['show'][0] = IDPosterValidation.new
+
+
+    @strategy[ClientObject.to_s]['create'] = Array.new()
+    @strategy[ClientObject.to_s]['create'][0] = ClientGenderValidation.new()
+    @strategy[ClientObject.to_s]['create'][1] = EmailPresenceValidation.new()
+    @strategy[ClientObject.to_s]['create'][2] = EmailValidation.new()
+    @strategy[ClientObject.to_s]['create'][3] = CpfLengthValidation.new()
+    @strategy[ClientObject.to_s]['create'][4] = CpfNumberValidation.new()
+    @strategy[ClientObject.to_s]['create'][5] = NullClientStreet.new()
+    @strategy[ClientObject.to_s]['create'][6] = NullClientNeighborhood.new()
+    @strategy[ClientObject.to_s]['create'][7] = NullClientNumber.new()
+    @strategy[ClientObject.to_s]['create'][8] = ClientNumberValidation.new()
+    @strategy[ClientObject.to_s]['create'][9] = ExistingEmailValidation.new()#
+    @strategy[ClientObject.to_s]['create'][10] = ExistingCpfValidation.new()#
+    @strategy[ClientObject.to_s]['create'][11] = NullClientCity.new()
+    @strategy[ClientObject.to_s]['create'][12] = NullClientState.new()
+    @strategy[ClientObject.to_s]['create'][13] = NullClientZipCode.new()
+    @strategy[ClientObject.to_s]['create'][14] = PasswordLengthValidation.new()
+    @strategy[ClientObject.to_s]['create'][15] = ConfirmPasswordValidation.new()
+    @strategy[ClientObject.to_s]['create'][16] = NullClientName.new
 
     @strategy[Client.to_s]['show'] = Array.new()
     @strategy[Client.to_s]['show'][0] = NullClientId.new
 
-    @strategy[Client.to_s]['edit'] = Array.new()
-    @strategy[Client.to_s]['edit'][0] = NullClientStreet.new()
-    @strategy[Client.to_s]['edit'][1] = NullClientNeighborhood.new()
-    @strategy[Client.to_s]['edit'][2] = NullClientNumber.new()
-    @strategy[Client.to_s]['edit'][3] = NullClientCity.new()
-    @strategy[Client.to_s]['edit'][4] = NullClientState.new()
-    @strategy[Client.to_s]['edit'][5] = NullClientZipCode.new()
+    @strategy[ClientObject.to_s]['edit'] = Array.new()
+    @strategy[ClientObject.to_s]['edit'][0] = NullClientStreet.new()
+    @strategy[ClientObject.to_s]['edit'][1] = NullClientNeighborhood.new()
+    @strategy[ClientObject.to_s]['edit'][2] = NullClientNumber.new()
+    @strategy[ClientObject.to_s]['edit'][3] = NullClientCity.new()
+    @strategy[ClientObject.to_s]['edit'][4] = NullClientState.new()
+    @strategy[ClientObject.to_s]['edit'][5] = NullClientZipCode.new()
 
     @strategy[Login.to_s]['find_by_email'] = Array.new()
     @strategy[Login.to_s]['find_by_email'][0] = LoginNullPassword.new()
     @strategy[Login.to_s]['find_by_email'][1] = LoginNullEmail.new()
-    @strategy[Login.to_s]['find_by_email'][2] = EmailValidation.new()
+    #@strategy[Login.to_s]['find_by_email'][2] = EmailValidation.new()
 
 
     @strategy[Order.to_s]['create'] = Array.new()
@@ -151,10 +166,15 @@ class Facade
     @strategy[Voucher.to_s]['edit'] = Array.new()
     @strategy[Voucher.to_s]['edit'][0] = VoucherNullValidation.new()
 
+    @strategy[Graph.to_s]['graph'] = Array.new()
+    @strategy[Graph.to_s]['graph'][0] = GraphDateValidation.new
+    @strategy[Graph.to_s]['graph'][1] = GraphReturnValidation.new
+
     @strategyResult = ""
   end
 
   def list(domain)
+
     something = @dao[domain.class.to_s].list
     something
   end
@@ -209,7 +229,6 @@ class Facade
   end
 
   def create (domain)
-
     @strategy[domain.class.to_s]['create'].each do |t|
       teste = t.validate(domain)
       if teste.length != 0
@@ -225,6 +244,7 @@ class Facade
   end
 
   def find_by_email(domain)
+
     @strategy[domain.class.to_s]['find_by_email'].each do |t|
       teste = t.validate(domain)
       if teste.length != 0
@@ -323,6 +343,23 @@ class Facade
 
     if @strategyResult.length == 0
       @dao[domain.class.to_s].cancel_order(domain.id)
+    else
+      return @strategyResult
+    end
+
+  end
+
+
+  def graphs(domain, option)
+    @strategy[domain.class.to_s]['graph'].each do |t|
+      teste = t.validate(domain)
+      if teste.length != 0
+        @strategyResult = @strategyResult + " " + teste
+      end
+    end
+
+    if @strategyResult.length == 0
+      @dao[domain.class.to_s].retrieve_data(domain, option)
     else
       return @strategyResult
     end

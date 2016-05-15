@@ -5,6 +5,8 @@ Rails.application.routes.draw do
   resources :cart
   resources :admin
   resources :admin_orders
+  resources :client_objects, path: 'clients'
+
 
   match '/log_in' => 'login#log_in', via: [:post]
   #match '/login/logout' => 'login#log_out', via: [:get]
