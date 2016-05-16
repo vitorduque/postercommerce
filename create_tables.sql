@@ -23,6 +23,7 @@ USE `appmysql_development` ;
 CREATE TABLE IF NOT EXISTS `appmysql_development`.`clients` (
   `id` INT(11) NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(100) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NOT NULL,
+  `gender` VARCHAR(10) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NOT NULL,
   `email` VARCHAR(100) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NOT NULL,
   `password` VARCHAR(45) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NOT NULL,
   `cpf` VARCHAR(11) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NOT NULL,
@@ -37,7 +38,7 @@ CREATE TABLE IF NOT EXISTS `appmysql_development`.`clients` (
   `updated_at` DATETIME NOT NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB
-AUTO_INCREMENT = 12
+AUTO_INCREMENT = 25
 DEFAULT CHARACTER SET = utf8
 COLLATE = utf8_unicode_ci;
 
@@ -100,7 +101,7 @@ CREATE TABLE IF NOT EXISTS `appmysql_development`.`orders` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
-AUTO_INCREMENT = 149
+AUTO_INCREMENT = 185
 DEFAULT CHARACTER SET = utf8
 COLLATE = utf8_unicode_ci;
 
@@ -124,7 +125,7 @@ CREATE TABLE IF NOT EXISTS `appmysql_development`.`posters` (
   `image` LONGBLOB NOT NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB
-AUTO_INCREMENT = 109
+AUTO_INCREMENT = 118
 DEFAULT CHARACTER SET = utf8
 COLLATE = utf8_unicode_ci;
 
