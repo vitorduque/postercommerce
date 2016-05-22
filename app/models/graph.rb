@@ -1,8 +1,23 @@
 class Graph
   include ActiveModel::Model
 
-  attr_accessor :begin, :end, :names, :amount, :male, :female, :count, :order_date, :max
+  attr_accessor :begin, :end, :names, :amount, :male, :female, :count, :order_date, :max, :category, :category_score, :graph_3_names, :graph_3_scores
 
+
+  def datas_graph_three(something)
+    @graph_3_names = Array.new
+    @graph_3_scores = Array.new
+
+    something.each_with_index do |s, index|
+      @graph_3_names[index] = Array.new
+      @graph_3_scores[index] = Array.new
+      s.each do |ss|
+        @graph_3_names[index] << ss.category
+        @graph_3_scores[index] << ss.category_score
+      end
+    end
+    binding.pry
+  end
 
   def graph_category_sex(male, female)
     @male = Array.new(12,0)

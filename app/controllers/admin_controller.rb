@@ -35,13 +35,18 @@ class AdminController < ApplicationController
     @graph.end << " 23:59:59"
     result1 = @command['graphs'].execute(@graph, 1)
     result2 = @command['graphs'].execute(@graph, 2)
+    result3 = @command['graphs'].execute(@graph, 3)
+
     if result1.is_a?(String)
       @graph.errors.add("Errors: ", result1)
       render 'analisys'
     else
       @graph.mine_order_items(result1[0], result1[1])
       @graph.graph_category_sex(result2[0], result2[1])
+      @graph.datas_graph_three(result3)
+
       render 'graph_view'
+
     end
 
   end

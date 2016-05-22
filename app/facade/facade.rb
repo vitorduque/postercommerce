@@ -38,6 +38,7 @@ class Facade
   require '/home/vitor/RailsProjects/postercommerce/app/validations/client_gender_validation.rb'
   require '/home/vitor/RailsProjects/postercommerce/app/validations/graph_date.rb'
   require '/home/vitor/RailsProjects/postercommerce/app/validations/graph_return.rb'
+  require '/home/vitor/RailsProjects/postercommerce/app/validations/born_date_validation.rb'
 
   def initialize
     dao_conn_data = DaoConnectionData.new()
@@ -116,6 +117,7 @@ class Facade
     @strategy[ClientObject.to_s]['create'][14] = PasswordLengthValidation.new()
     @strategy[ClientObject.to_s]['create'][15] = ConfirmPasswordValidation.new()
     @strategy[ClientObject.to_s]['create'][16] = NullClientName.new
+    @strategy[ClientObject.to_s]['create'][17] = BornDateValidation.new
 
     @strategy[Client.to_s]['show'] = Array.new()
     @strategy[Client.to_s]['show'][0] = NullClientId.new
@@ -127,6 +129,7 @@ class Facade
     @strategy[ClientObject.to_s]['edit'][3] = NullClientCity.new()
     @strategy[ClientObject.to_s]['edit'][4] = NullClientState.new()
     @strategy[ClientObject.to_s]['edit'][5] = NullClientZipCode.new()
+    @strategy[ClientObject.to_s]['edit'][6] = ClientNumberValidation.new()
 
     @strategy[Login.to_s]['find_by_email'] = Array.new()
     @strategy[Login.to_s]['find_by_email'][0] = LoginNullPassword.new()

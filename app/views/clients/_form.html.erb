@@ -28,6 +28,10 @@
     <%=f.radio_button(:gender, "Female")%> Female<br>
   </div>
   <div class="field">
+    <%= f.label :born_date %>
+    <%= date_field(:client, :born_date) %>
+  </div>
+  <div class="field">
     <%= f.label :email %>
     <%= f.text_field :email %>
   </div>

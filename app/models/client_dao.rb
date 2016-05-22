@@ -9,10 +9,11 @@ class ClientDao
     client.updated_at = Time.now.to_s(:db)
     db = @connection.open
     db.query("insert into clients
-    (name, gender ,email, password, cpf, street, number, neighborhood, city,
+    (name, gender, born_date, email, password, cpf, street, number, neighborhood, city,
     state, zip_code, complement, created_at, updated_at)
           VALUES('#{client.name}',
           '#{client.gender}',
+          '#{client.born_date}',
           '#{client.login.email}',
           '#{client.login.password}',
           '#{client.cpf}',

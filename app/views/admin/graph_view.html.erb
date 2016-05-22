@@ -76,5 +76,51 @@ Between:  <strong><%=@graph.begin%></strong> and <strong><%=@graph.end%></strong
 </table>
 
 <hr>
-<br>
+Between 10~19 yrs.<br>
+<%=image_tag(Gchart.bar(size: '500x600',
+                        data: @graph.graph_3_scores[0],
+                        max_value: @graph.graph_3_scores[0][@graph.graph_3_scores[0].index(@graph.graph_3_scores[0].compact.max)],
+                        min_value: 0,
+                        axis_with_labels: ['x', 'y'],
+                        #legend: ['1 - ', '2 - ','3 - ','4 - ','5 - ','6 - '],
+                        axis_labels: [@graph.graph_3_names[0]],
+                        axis_range: [nil, [0,100,5]]
+
+                        ))%>
+<hr>
+Between 20 ~ 29 yrs.<br>
+<%=image_tag(Gchart.bar(size: '500x600',
+                        data: @graph.graph_3_scores[1],
+                        max_value: @graph.graph_3_scores[1][@graph.graph_3_scores[1].index(@graph.graph_3_scores[1].compact.max)],
+                        min_value: 0,
+                        axis_with_labels: ['x', 'y'],
+                        #legend: ['1 - ', '2 - ','3 - ','4 - ','5 - ','6 - '],
+                        axis_labels: [@graph.graph_3_names[1]],
+                        axis_range: [nil, [0,100,5]]
+
+                        ))%>
+<hr>
+Between 30 ~ 39<br>
+<%=image_tag(Gchart.bar(size: '500x600',
+                        data: @graph.graph_3_scores[2],
+                        max_value: @graph.graph_3_scores[2][@graph.graph_3_scores[2].index(@graph.graph_3_scores[2].compact.max)],
+                        min_value: 0,
+                        axis_with_labels: ['x', 'y'],
+                        #legend: ['1 - ', '2 - ','3 - ','4 - ','5 - ','6 - '],
+                        axis_labels: [@graph.graph_3_names[2]],
+                        axis_range: [nil, [0,100,5]]
+
+                        ))%>
+<hr>
+Between 40 ~ 49<br>
+<%=image_tag(Gchart.bar(size: '500x600',
+                        data: @graph.graph_3_scores[3],
+                        max_value: @graph.graph_3_scores[3][@graph.graph_3_scores[3].index(@graph.graph_3_scores[3].compact.max)] + 10,
+                        min_value: 0,
+                        axis_with_labels: ['x', 'y'],
+                        #legend: ['1 - ', '2 - ','3 - ','4 - ','5 - ','6 - '],
+                        axis_labels: [@graph.graph_3_names[3]],
+                        axis_range: [nil, [0,100,5]]
+
+                        ))%>
 <%=link_to 'back', controller:'admin'%>
