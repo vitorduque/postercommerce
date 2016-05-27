@@ -16,7 +16,7 @@ class Graph
         @graph_3_scores[index] << ss.category_score
       end
     end
-    binding.pry
+    
   end
 
   def graph_category_sex(male, female)

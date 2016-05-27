@@ -5,6 +5,17 @@
   </head>
   <body>
     <h1>We registred your order!</h1>
-    <p><%=link_to "Click here", :host => 'localhost:3000' ,controller: 'orders', action:'index'%> to see all infos!</p>
+    <p><%=link_to "Click here", :host => 'localhost:3000' ,controller: 'orders', action:'index'%> to see all infos!</p><br>
+
+    <%@items.each do |item|%>
+        <%=item["amount"]%>x <%=item["name"]%> - <%=item["size"]%> <br>
+    <%end%>
+    <hr>
+    Order date: <%=Time.now.to_s%><br>
+    Payment Status: Waiting payment<br>
+    Shipping Method: <%=@order.shipping_method%> <br>
+    Shipping Status: Waiting Payment/Not delivered<br>
+    Total price: <%=@order.total_price%><br><br>
+
   </body>
 </html>

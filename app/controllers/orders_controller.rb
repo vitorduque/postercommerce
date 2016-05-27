@@ -5,7 +5,7 @@ class OrdersController < ApplicationController
     if session[:signed_in]
       #@orders = get_orders(session[:user_id])
       @orders = @command['get_orders_by_id'].execute(Order.new(client_id: session[:user_id]))
-      
+
       render 'my_orders'
     else
       redirect_to controller: 'login', action: 'index'
@@ -52,7 +52,7 @@ class OrdersController < ApplicationController
         if result.nil? and result2.nil?
           order_id = @command['get_last_order_by_id'].execute(@order)
           insert_items(session[:cart_signed_in][session[:user_id].to_s], @order.client_id, order_id)
-          SendOrder.send_order_email(@client, @order).deliver
+          SendOrder.send_order_email(@client, @order, session[:cart_signed_in][session[:user_id].to_s]).deliver
           session[:cart_signed_in] = nil
           redirect_to root_path
         else
