@@ -162,12 +162,15 @@ class Facade
     @strategy[Order.to_s]['cancel_order_by_id'] = Array.new
     @strategy[Order.to_s]['cancel_order_by_id'][0] = NullOrderId.new
 
-    @strategy[Voucher.to_s]['show'] = Array.new()
-    @strategy[Voucher.to_s]['show'][0] = VoucherNullValidation.new()
+    @strategy[Voucher.to_s]['show'] = Array.new
+    @strategy[Voucher.to_s]['show'][0] = VoucherNullValidation.new
+
+    @strategy[Voucher.to_s]['retrieve_clients_active_vouchers'] = Array.new
 
 
-    @strategy[Voucher.to_s]['edit'] = Array.new()
-    @strategy[Voucher.to_s]['edit'][0] = VoucherNullValidation.new()
+
+    @strategy[Voucher.to_s]['edit'] = Array.new
+    @strategy[Voucher.to_s]['edit'][0] = VoucherNullValidation.new
 
     @strategy[Graph.to_s]['graph'] = Array.new()
     @strategy[Graph.to_s]['graph'][0] = GraphDateValidation.new
@@ -177,7 +180,6 @@ class Facade
   end
 
   def list(domain)
-
     something = @dao[domain.class.to_s].list
     something
   end
@@ -369,6 +371,21 @@ class Facade
 
   end
 
+  def retrieve_clients_active_vouchers(domain)
+    @strategy[domain.class.to_s]['retrieve_clients_active_vouchers'].each do |t|
+      teste = t.validate(domain)
+      if teste.length != 0
+        @strategyResult = @strategyResult + " " + teste
+      end
+    end
+
+    if @strategyResult.length == 0
+      @dao[domain.class.to_s].retrieve_clients_active_vouchers(domain)
+    else
+      return @strategyResult
+    end
+
+  end
 
 private
   def voucher_gen

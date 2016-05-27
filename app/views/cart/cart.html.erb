@@ -66,7 +66,9 @@
 <%end%>
 </table>
 <hr>
-
+<% if flash[:notice] %>
+  <div class="notice">Error: <%= flash[:notice] %></div>
+<% end %>
 <%= form_for @order,
   url: url_for(controller: 'orders', action: 'create'),
   method: 'post', html: { class: 'form-control' } do |f| %>
@@ -103,7 +105,13 @@
 <strong>Total:</strong>
 <%=backup%> + Ship price<br>
     <%=f.label :voucher %>
-    <%=f.text_field :id_voucher%>
+    <!--<%=f.text_field :id_voucher%><br>-->
+    <select name="order[id_voucher]" id="order_id_voucher">
+      <option value=<%nil%>> No one </option>
+      <%@vouchers.each.with_index do |v, i|%>
+        <option value="<%=v.id_voucher%>"> <%=i+1%> - $ <%=v.price%> </option>
+      <%end%>
+    </select><br>
 <hr>
     <%=f.submit 'Buy' %>
 <%end%>

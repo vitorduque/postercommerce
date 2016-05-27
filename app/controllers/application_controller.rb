@@ -3,8 +3,9 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
 
-    require '/home/vitor/RailsProjects/postercommerce/app/commands/command_admin_set.rb'
-require '/home/vitor/RailsProjects/postercommerce/app/commands/command_graphs.rb'
+  require '/home/vitor/RailsProjects/postercommerce/app/commands/command_admin_set.rb'
+  require '/home/vitor/RailsProjects/postercommerce/app/commands/command_graphs.rb'
+  require '/home/vitor/RailsProjects/postercommerce/app/commands/command_client_vouchers.rb'
   def initialize
     super
     @command = Hash.new
@@ -20,6 +21,7 @@ require '/home/vitor/RailsProjects/postercommerce/app/commands/command_graphs.rb
     @command['complain_order_by_id'] = CommandComplainOrderById.new
     @command['cancel_order_by_id'] = CommandCancelOrderById.new
     @command['graphs'] = CommandGraph.new
+    @command['retrieve_clients_active_vouchers'] = CommandClientActiveVouchers.new
   end
 
 end

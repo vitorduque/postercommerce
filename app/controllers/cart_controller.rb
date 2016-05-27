@@ -43,7 +43,7 @@ class CartController < ApplicationController
           end
         end
       end
-      redirect_to controller: 'store', action: 'my_cart'
+      redirect_to controller: 'cart', action: 'index'
     else
       @cart_item.errors.add("Erro: ", "Amount must be a number")
       redirect_to controller: 'store', action: 'index', notice: 'Error: Amount must be a number'
@@ -52,6 +52,9 @@ class CartController < ApplicationController
 
   def index
     @order = Order.new
+    @vouchers = @command['retrieve_clients_active_vouchers'].execute(Voucher.new(clients_id: session[:user_id]))
+    #binding.pry
+
     get_client
     render 'cart'
   end

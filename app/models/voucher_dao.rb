@@ -36,5 +36,21 @@ class VoucherDao
     voucher
   end
 
+  def retrieve_clients_active_vouchers(domain)
+    db = @conn.open
+    list = Array.new
+    unique_result = db.query("select * from vouchers where active = 1 and clients_id = '#{domain.clients_id}'")
+
+    unique_result.each do |row|
+      voucher = Voucher.new()
+      voucher.id_voucher = row['id']
+      voucher.price = row['price']
+      voucher.active = row['active']
+      voucher.clients_id=row['clients_id']
+      list << voucher
+    end
+    db.close
+    list
+  end
 
 end

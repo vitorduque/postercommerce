@@ -32,8 +32,8 @@ class OrdersController < ApplicationController
     get_client
     if user_signed_in?
       if session[:cart_signed_in][session[:user_id].to_s].empty?
-        @order.errors.add("Error: ", "Your cart is empty ")
-        render '/cart/cart'
+        flash[:notice] = "Your cart is empty "
+        redirect_to controller: 'cart', action: 'index'
       else
         if @voucher.id_voucher.nil?
           result = @command['create'].execute(@order)
@@ -57,7 +57,8 @@ class OrdersController < ApplicationController
           redirect_to root_path
         else
           @order.errors.add("Errors: ", result)
-          render '/cart/cart'
+          flash[:notice] = result
+          redirect_to controller: 'cart', action: 'index'
         end
       end
     else
