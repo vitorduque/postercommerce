@@ -34,6 +34,8 @@ Rails.application.routes.draw do
   get '/analisys', to: 'admin#analisys'
   post '/gerenate_graph', to: 'admin#gerenate_graph'
   get '/render_analisys', to: 'admin#render_analisys'
+  
+  post '/complain_order', to: 'orders#complain_order'
   #post '/edit', to: 'clients#edit'
   #post '/clients/:id/edit', to: 'clients#update'
   # The priority is based upon order of creation: first created -> highest priority.

@@ -38,7 +38,9 @@ class ItemDao
       item.size = row['size']
       item.amount = row['amount']
       item.name = row['name']
-
+      item.price_small = row ['price_small']
+      item.price_medium = row ['price_medium']
+      item.price_large = row ['price_large']
       items << item
     end
 

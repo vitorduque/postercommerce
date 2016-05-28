@@ -15,12 +15,50 @@ class OrdersController < ApplicationController
   def show
     @items = find_items(session[:user_id], params[:id])
     @order = get_order_by_id(params[:id])
-
-    if @items.empty?
-      index
-    else
-      render 'show'
+    @sizes = Array.new
+    @max = Array.new
+    @items.each do |i|
+      @max << i.amount
     end
+    if params[:values].nil?
+      @values = Array.new
+      @items.each do |i|
+        @values << 0
+      end
+    else
+      @items.each do |i|
+        if i.size.eql? "Small"
+          @sizes << i.price_small
+        elsif i.size.eql? "Medium"
+          @sizes << i.price_medium
+        else
+          @sizes << i.price_large
+        end
+      end
+
+      @values = params[:values]
+      @values.each_with_index do |v, i|
+        @values[i] = v.to_i
+      end
+      if params[:increment].to_i.eql? 1
+        if params[:increment].to_i > @max[params[:item].to_i]
+          render 'show'
+        elsif @values[params[:item].to_i] < @max[params[:item].to_i]
+          @values[params[:item].to_i] += params[:increment].to_i
+          render 'show'
+        end
+      elsif params[:decrement].to_i.eql?1
+        if @values[params[:item].to_i].eql? 0
+          render 'show'
+        else
+          @values[params[:item].to_i] -= params[:decrement].to_i
+          render 'show'
+        end
+      else
+        render 'show'
+      end
+    end
+
   end
 
   def create
@@ -81,13 +119,21 @@ class OrdersController < ApplicationController
   end
 
   def complain_order
-    @order = get_order_by_id(params[:id])
+
+    @order = get_order_by_id(params[:order][:id])
+    @order.total_price = params[:order][:total_price].to_f
+    binding.pry
     get_client
-    if session[:user_id].eql? @order.client_id
-      ComplainOrder.send_complained_email(@client, @order).deliver
-      complain_order_by_id(Order.new(id: params[:id]))
-      redirect_to controller: 'orders', action: 'index'
+    if not params[:order][:total_price].to_f < 1
+      if session[:user_id].eql? @order.client_id
+        ComplainOrder.send_complained_email(@client, @order).deliver
+        complain_order_by_id(@order)
+        redirect_to controller: 'orders', action: 'index'
+      else
+        index
+      end
     else
+      flash[:notice] = "Error: select your products"
       index
     end
   end
@@ -115,7 +161,7 @@ private
 
   #Call to command array
   def get_order_by_id(id)
-    @command['show'].execute(Order.new(id: params[:id]))
+    @command['show'].execute(Order.new(id: id))
     #dao = OrderDao.new(OpenConnection.new('localhost', 'root', 'root', '3306', 'appmysql_development'))
     #dao.find(id)
   end

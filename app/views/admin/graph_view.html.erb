@@ -1,3 +1,6 @@
+<%= javascript_include_tag "//www.google.com/jsapi", "chartkick" %><br><br><br><br>
+<%= pie_chart({"Football" => 10, "Basketball" => 5}) %><br>
+<%= line_chart({20.day.ago => 5, 1368174456 => 4, "2013-05-07 00:00:00 UTC" => 7}) %>
 Between:  <strong><%=@graph.begin%></strong> and <strong><%=@graph.end%></strong><br>
 <%=image_tag(Gchart.bar(size: '500x600',
                         data: @graph.amount,

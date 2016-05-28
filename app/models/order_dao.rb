@@ -118,9 +118,9 @@ WHERE orders.id = '#{order_id}'")
     db.close
   end
 
-  def set_as_complained(order_id)
+  def set_as_complained(domain)
     db = @conn.open
-    db.query("update orders set shipping_status = 4, payment_status = 3 where orders.id = '#{order_id}'")
+    db.query("update orders set total_price = '#{domain.total_price}', shipping_status = 4, payment_status = 3 where orders.id = '#{domain.id}'")
 
     db.close
   end

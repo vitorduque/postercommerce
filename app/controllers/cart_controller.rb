@@ -29,7 +29,6 @@ class CartController < ApplicationController
           end
         end
       else
-
         x = @cart_item.cart_item_already_exists?(@cart_item, session[:cart] )
         y = @cart_item.category_already_exists?(@cart_item, session[:cart] )
         if !x

@@ -1,8 +1,30 @@
+<%if  @order.shipping_status.eql? "Delivered"%>
+<%=flash[:notice]%>
+<h3>To complain the order</h3>
+<%@items.each_with_index do |item, i|%>
+  <%var = item.amount%>
+  <%id_size =  item.posters_id.to_s + "_" + item.size.to_s%>
+    <%=item.amount%>x <%=item.name%> - <%=item.size%> | <%=link_to '-', controller: 'orders', action: 'show', values: @values, decrement: 1, item: i%> <%=@values[i]%>
+    <%=link_to '+', controller: 'orders', action: 'show', values: @values, increment: 1, item: i%> <br>
+    <%end%>
+    <%total = 0
+      @values.each_with_index do |v, i|
+        total += v * @sizes[i].to_i
+      end%>
+    <br>
+    Total: <%=total.to_f%>
 
-<%@items.each do |item|%>
-    <%=item.amount%>x <%=item.name%> - <%=item.size%> <br>
+    <%= form_for @order,
+      url: url_for(controller: 'orders', action: 'complain_order'),
+      method: 'post', html: { class: 'form-control' } do |f| %>
+
+        <%= f.hidden_field :total_price, :value => total%>
+        <%= f.hidden_field :id, :value => @order.id%>
+        <%=f.submit 'Complain' %>
+    <%end%>
+    <hr>
 <%end%>
-<hr>
+
 Order date: <%=@order.date%><br>
 Payment Status: <%=@order.payment_status%><br>
 Shipping Method: <%=@order.shipping_method%> <br>
