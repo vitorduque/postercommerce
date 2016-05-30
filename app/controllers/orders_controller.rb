@@ -122,7 +122,6 @@ class OrdersController < ApplicationController
 
     @order = get_order_by_id(params[:order][:id])
     @order.total_price = params[:order][:total_price].to_f
-    binding.pry
     get_client
     if not params[:order][:total_price].to_f < 1
       if session[:user_id].eql? @order.client_id
