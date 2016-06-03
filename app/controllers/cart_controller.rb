@@ -2,7 +2,6 @@ class CartController < ApplicationController
 
   def add_to_cart
 
-    #binding.pry
     #poster = @command['show'].execute(Poster.new(id: params[:cart_item]["item_id"]))
     poster = @command['show'].execute(PosterObject.new(params[:cart_item]["item_id"],nil,nil,nil,nil,nil,nil,nil,nil,nil,nil))
 
