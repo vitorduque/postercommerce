@@ -1,26 +1,39 @@
-<%= form_for @login,
-  url: url_for(controller: 'admin', action: 'admin_log_in'),
-  method: :post, html: { class: 'form-control' } do |f| %>
-  <%  if @login.errors.any? %>
-    <div id="error_explanation">
+<br><br><br><br>
+<div class="ui column stackable center page grid">
+  <div class="five wide column"></div><!-- empty div just padding -->
+  <div class='ui form error'>
+    <div class='ui grid'>
+      <%= form_for @login,
+        url: url_for(controller: 'admin', action: 'admin_log_in'),
+        method: :post, html: { class: 'ui sixteen wide column form segment' } do |f| %>
+        <a class="ui red ribbon label">ADMIN</a>
+        <span>Please login to continue</span>
+        <p></p>
+        <%  if @login.errors.any? %>
+          <div id="error_explanation" class="ui error message">
 
-      <ul>
-      <% @login.errors.full_messages.each do |message| %>
-          <li><%= message %></li>
-        <% end%></ul>
+            <ul>
+            <% @login.errors.full_messages.each do |message| %>
+                <li><%= message %></li>
+              <% end%></ul>
+          </div>
+        <% end %>
+        <div class="field">
+          <%= f.label :email %>
+          <%= f.text_field :email%>
+        </div>
+        <div class="field">
+          <%= f.label :password %>
+          <%= f.password_field :password%>
+        </div>
+        <div class='actions'>
+        <%= f.submit 'Login', class:'ui fluid large teal submit button'  %>
+        </div>
+        <br>
+      <% end %>
     </div>
-  <% end %>
-  <div class="field">
-    <%= f.label :email %>
-    <%= f.text_field :email%>
   </div>
-  <div class="field">
-    <%= f.label :password %>
-    <%= f.password_field :password%>
-  </div>
-  <div class='actions'>
-  <%= f.submit 'Login'  %>
-  </div>
-  <br>
-  <%=link_to 'Register', "/clients/new"%>
-<% end %>
+  <form class="">
+     <!-- login input fields go here -->
+  </form>
+</div>
