@@ -1,5 +1,5 @@
 class OrdersController < ApplicationController
-  require '/home/vitor/RailsProjects/postercommerce/app/models/order_item_dao.rb'
+  require '/home/vitor/RailsProjects/postercommerce/app/dao/order_item_dao.rb'
 
   def index
     if session[:signed_in]

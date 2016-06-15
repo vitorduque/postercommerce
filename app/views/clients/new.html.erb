@@ -1,5 +1,13 @@
-<%= link_to 'Back to store', root_path %>
+<div class="ui secondary  menu">
+  <button class="ui tiny  compact abeled icon button">
+    <i class="left arrow icon"></i>
+    <%= link_to 'Back to store', root_path%>
+  </button>
 
+<%=link_to 'Login', "/login", class:'item'%>
+<%=link_to 'Register', "/clients/new", class: 'item'%>
+<%= link_to "My cart ", "/cart", class: 'item' %>
+</div>
 <% params[:action]='create' %>
 <% params[:controller]='clients' %>
 <% params[:method]= :post %>

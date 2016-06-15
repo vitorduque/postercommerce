@@ -11,11 +11,8 @@ class CartItem
   def new_amount(cart, session_cart)
     amount = cart.amount.to_i
     amount_session_cart = session_cart["amount"].to_i
-
     amount_new = amount + amount_session_cart
-
     amount_new
-
   end
 
   def category_already_exists?(cart_item, cart)

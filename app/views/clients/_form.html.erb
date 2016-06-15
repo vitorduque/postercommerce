@@ -1,81 +1,99 @@
-<%= form_for @client,
-  url: url_for(controller: params[:controller], action: params[:action]),
-  method: params[:method], html: { class: 'form-control' } do |f| %>
-  <%  if @client.errors.any? %>
-    <div id="error_explanation">
+<div class="ui one column stackable aligned page grid">
+  <div class="column twelve wide">
+    <div class='ui form error'>
+      <%= form_for @client,
+        url: url_for(controller: params[:controller], action: params[:action]),
+        method: params[:method], html: { class: 'ui form' } do |f| %>
+        <%  if @client.errors.any? %>
+          <div id="error_explanation" class="ui error message">
+            <div class="header">Error</div>
+            <ul>
+            <% @client.errors.full_messages.each do |message| %>
+              <li><%= message %></li>
+            <% end %>
+            </ul>
+          </div>
 
+        <% end %>
 
-      <ul>
-      <% @client.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
+        <h2>Create new account</h2>
+
+        <%= f.hidden_field :id %>
+        <%= f.hidden_field :created_at %>
+        <%= f.hidden_field :updated_at %>
+        <div class="field">
+          <%= f.label :name %>
+          <%= f.text_field :name %>
+        </div>
+        <div class='grouped fields'>
+          <label for="fruit">Sex:</label>
+          <div class="field">
+            <div class="ui radio checkbox">
+              <%=f.radio_button(:gender, "Male")%>
+              <label>Male</label>
+            </div>
+          </div>
+          <div class="field">
+            <div class="ui radio checkbox">
+              <%=f.radio_button(:gender, "Female")%>
+              <label>Female</label>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="field">
+          <%= f.label :born_date %>
+          <%= date_field(:client, :born_date) %>
+        </div>
+        <div class="field">
+          <%= f.label :email %>
+          <%= f.text_field :email %>
+        </div>
+        <div class="field">
+          <%= f.label :password %>
+          <%= f.password_field :password %>
+        </div>
+        <div class="field">
+          <%= f.label :confirm_password %>
+          <%= f.password_field :confirm_password %>
+        </div>
+        <div class="field">
+          <%= f.label :cpf %>
+          <%= f.text_field :cpf %>
+        </div>
+        <div class="field">
+          <%= f.label :street %>
+          <%= f.text_field :street %>
+        </div>
+        <div class="field">
+          <%= f.label :number %>
+          <%= f.text_field :number %>
+        </div>
+        <div class="field">
+          <%= f.label :neighborhood %>
+          <%= f.text_field :neighborhood%>
+        </div>
+        <div class="field">
+          <%= f.label :city %>
+          <%= f.text_field :city %>
+        </div>
+        <div class="field">
+          <%= f.label :state %>
+          <%= f.text_field :state %>
+        </div>
+        <div class="field">
+          <%= f.label :complement %><br>
+          <%= f.text_area :complement %>
+        </div>
+        <div class="field">
+          <%= f.label :zip_code %>
+          <%= f.text_field :zip_code %>
+        </div>
+        <div class='actions'>
+        <%= f.submit 'Save', class:'ui blue button'  %>
+        </div>
       <% end %>
-      </ul>
     </div>
-
-  <% end %>
-
-  <h2>New Client</h2>
-
-  <%= f.hidden_field :id %>
-  <%= f.hidden_field :created_at %>
-  <%= f.hidden_field :updated_at %>
-  <div class="field">
-    <%= f.label :name %>
-    <%= f.text_field :name %>
   </div>
-  <div>
-    <%=f.radio_button(:gender, "Male")%> Male
-    <%=f.radio_button(:gender, "Female")%> Female<br>
-  </div>
-  <div class="field">
-    <%= f.label :born_date %>
-    <%= date_field(:client, :born_date) %>
-  </div>
-  <div class="field">
-    <%= f.label :email %>
-    <%= f.text_field :email %>
-  </div>
-  <div class="field">
-    <%= f.label :password %>
-    <%= f.password_field :password %>
-  </div>
-  <div class="field">
-    <%= f.label :confirm_password %>
-    <%= f.password_field :confirm_password %>
-  </div>
-  <div class="field">
-    <%= f.label :cpf %>
-    <%= f.text_field :cpf %>
-  </div>
-  <div class="field">
-    <%= f.label :street %>
-    <%= f.text_field :street %>
-  </div>
-  <div class="field">
-    <%= f.label :number %>
-    <%= f.text_field :number %>
-  </div>
-  <div class="field">
-    <%= f.label :neighborhood %>
-    <%= f.text_field :neighborhood%>
-  </div>
-  <div class="field">
-    <%= f.label :city %>
-    <%= f.text_field :city %>
-  </div>
-  <div class="field">
-    <%= f.label :state %>
-    <%= f.text_field :state %>
-  </div>
-  <div class="field">
-    <%= f.label :complement %><br>
-    <%= f.text_area :complement %>
-  </div>
-  <div class="field">
-    <%= f.label :zip_code %>
-    <%= f.text_field :zip_code %>
-  </div>
-  <div class='actions'>
-  <%= f.submit 'Save'  %>
-  </div>
-<% end %>
+</div>

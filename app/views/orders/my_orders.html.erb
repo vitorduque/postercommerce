@@ -1,10 +1,23 @@
+<div class="ui secondary  menu">
+  <button class="ui tiny  compact abeled icon button">
+    <i class="left arrow icon"></i>
+    <%= link_to 'Back to store', root_path%>
+  </button>
+  <%= link_to "My orders ", 'orders', class:'item' %>
+  <%= link_to "My cart ", "/cart", class: 'item' %>
+  <%= link_to 'Logout', log_out_path, class:'item' %>
+</div>
 <p id="notice"><%= notice %></p>
-<table>
+<table  class="ui celled table">
   <thead>
-    <td><strong>Order id</strong></td>
-    <td><strong>Total price</strong></td>
-    <td><strong>Payment status</strong></td>
-    <td><strong>Shipping status</strong></td>
+    <tr>
+      <th><strong>Order id</strong></th>
+      <th><strong>Total price</strong></th>
+      <th><strong>Payment status</strong></th>
+      <th><strong>Shipping status</strong></th>
+      <th><strong>Details</strong></th>
+      <th><strong>Action</strong></th>
+    </tr>
   </thead>
   <%@orders.each do |order|%>
     <%status = nil
@@ -15,19 +28,32 @@
       end
     %>
     <tbody>
-      <td><%=order.id%></td>
-      <td><%=order.total_price%></td>
-      <td><%=order.payment_status%></td>
-      <td><%=order.shipping_status%></td>
-      <td><%= link_to 'Details', controller: 'orders', action: 'show', id: order.id %></td>
-      <%#binding.pry%>
-      <%if order.shipping_status.include? "Not" %>
-        <td><%= link_to 'Cancel order', controller: 'orders', action: 'cancel_order', id: order.id %></td>
-      <%elsif  order.shipping_status.include? "In"%>
-        <td><%= link_to 'Cancel order', controller: 'orders', action: 'cancel_order', id: order.id %></td>
-      <%elsif order.shipping_status.eql? "Delivered"%>
-        <!--<td><%= link_to 'Complain it', controller: 'orders', action: 'complain_order', id: order.id %></td>-->
-      <%end%>
+      <tr>
+        <td><%=order.id%></td>
+        <td>$ <%=order.total_price%></td>
+        <td><%=order.payment_status%></td>
+        <%if order.shipping_status.include? 'Delivered'%>
+          <td class="positive"><i class="icon checkmark"></i><%=order.shipping_status%></td>
+        <%elsif order.shipping_status.include? 'Waiting'%>
+          <td><%=order.shipping_status%></td>
+        <%elsif order.shipping_status.include? 'Voucher'%>
+          <td><i class="money icon"></i><%=order.shipping_status%></td>
+        <%elsif order.shipping_status.include? 'CANCELED'%>
+          <td><%=order.shipping_status%></td>
+        <%elsif order.shipping_status.include? 'COMPLAINED'%>
+          <td class="error"><%=order.shipping_status%></td>
+        <%elsif order.shipping_status.include? 'process'%>
+          <td><%=order.shipping_status%></td>
+        <%end%>
+        <td><i class="search icon"></i><%= link_to 'Details', controller: 'orders', action: 'show', id: order.id %></td>
+        <%if order.shipping_status.include? "Not" %>
+          <td><i class="ban icon"></i><%= link_to 'Cancel order', controller: 'orders', action: 'cancel_order', id: order.id %></td>
+        <%elsif  order.shipping_status.include? "In"%>
+          <td><i class="ban icon"></i><%= link_to 'Cancel order', controller: 'orders', action: 'cancel_order', id: order.id %></td>
+        <%elsif order.shipping_status.eql? "Delivered"%>
+          <td class="error"><i class="icon close"></i> <%= link_to 'Complain it', controller: 'orders', action: 'complain_order', id: order.id %></td>
+        <%end%>
+      </tr>
   <%end%>
 </table><br><br>
 <%= link_to 'Back to store', root_path %>

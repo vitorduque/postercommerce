@@ -44,7 +44,8 @@ class CartController < ApplicationController
       redirect_to controller: 'cart', action: 'index'
     else
       @cart_item.errors.add("Erro: ", "Amount must be a number")
-      redirect_to controller: 'store', action: 'index', notice: 'Error: Amount must be a number'
+      flash[:notice] = 'Error: Amount must be a number'
+      redirect_to controller: 'store', action: 'index'
     end
   end
 
@@ -63,7 +64,7 @@ class CartController < ApplicationController
       session[:cart_signed_in][session[:user_id].to_s] = Array.new
     end
 
-    redirect_to controller: 'store', action: 'my_cart'
+    redirect_to controller: 'store', action: 'index'
   end
 private
     def get_client

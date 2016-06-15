@@ -19,7 +19,7 @@ class OrderDao
 
   def list
     db = @conn.open
-    result_list = db.query('select * from orders', cast: false)
+    result_list = db.query('select * from orders order by orders.id desc', cast: false)
     orders = Array.new()
     result_list.each do |row|
       order = Order.new()
@@ -48,7 +48,7 @@ class OrderDao
                         ON orders.payment_status = payment_status.id
                         JOIN shipping_status
                         ON orders.shipping_status = shipping_status.id
-                        WHERE clients_id = '#{client_id}' ORDER BY orders.id asc;")
+                        WHERE clients_id = '#{client_id}' ORDER BY orders.id desc;")
 
     result.each do |row|
       order = Order.new()

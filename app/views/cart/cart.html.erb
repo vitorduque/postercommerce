@@ -7,15 +7,29 @@
 <%sub_total_price = 0%>
 <%backup = 0%>
 <%if session[:signed_in] != true%>
-  <%=link_to 'Login', "/login"%><br><br>
-  <%=link_to 'Register', "/clients/new"%><br><br>
+  <div class="ui secondary  menu">
+    <button class="ui tiny  compact abeled icon button">
+      <i class="left arrow icon"></i>
+      <%= link_to 'Back to store', root_path%>
+    </button>
+    <%=link_to 'Login', "/login", class:'item'%>
+    <%=link_to 'Register', "/clients/new", class: 'item'%>
+    <%= link_to "My cart ", "/cart", class: 'item' %>
+  </div>
 <%else%>
-  Hello <%=session[:user]["name"]%><br>
-  <%=session[:user_id]%><br>
+  <div class="ui secondary  menu">
+    <button class="ui tiny  compact abeled icon button">
+      <i class="left arrow icon"></i>
+      <%= link_to 'Back to store', root_path%>
+    </button>
+    <%= link_to "My orders ", 'orders', class:'item' %>
+    <%= link_to "My cart ", "/cart", class: 'item' %>
+    <%= link_to 'Logout', log_out_path, class:'item' %>
+  </div>
 <%end%>
-<%=link_to 'Back to store', root_path %>
 <hr>
 <%=link_to 'Empty my cart', controller: 'cart', action: 'empty_cart' %>
+
 <table>
   <thead>
     <tr>
@@ -85,7 +99,8 @@
 
     <strong>Your adress </strong><br>
     <strong>Ship method</strong><br>
-    <%=f.radio_button(:shipping_method, "FedEX")%> FedEX: $12.30<br>
+    <%=f.radio_button(:shipping_method, "FedEX", class: "with-gap")%> FedEX: $12.30<br>
+
     <%=f.radio_button(:shipping_method, "USPS")%> USPS: $10.00<br><br>
     <%if session[:signed_in]%>
       <strong>Your address</strong><br>
@@ -111,7 +126,8 @@
       <%@vouchers.each.with_index do |v, i|%>
         <option value="<%=v.id_voucher%>"> <%=i+1%> - $ <%=v.price%> </option>
       <%end%>
-    </select><br>
+    </select><br><br>
+
 <hr>
     <%=f.submit 'Buy' %>
 <%end%>

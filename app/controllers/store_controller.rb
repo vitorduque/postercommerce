@@ -13,7 +13,7 @@ class StoreController < ApplicationController
       session[:cart] = Array.new
     end
     @list = Array.new
-    @posters = @command['list'].execute(Poster.new)
+    @posters = @command['list'].execute(PosterObject.new(nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil))
     render 'store'
   end
 
