@@ -1,16 +1,34 @@
-<h1>Listing Posters</h1>
+<div class="ui secondary  menu">
+  <button class="ui tiny  compact abeled icon button">
+    <i class="left arrow icon"></i>
+    <%= link_to 'Back to index', admin_index_url%>
+  </button>
+  <a class="active item">
+    Welcome Admin!
+  </a>
+  <%= link_to 'Poster CRUD', posters_path, class:'item' %>
+  <%= link_to 'All orders', admin_orders_path, class: 'item' %>
+  <%= link_to 'Analisys', analisys_path_url, class: 'item' %>
+  <div class="right menu">
+      <%= link_to 'Logout', admin_logout_path, class:'ui item' %><br>
+  </div>
+</div>
+
+
+<h1 align='center '>Listing Posters</h1>
 <p id="notice"><%= params[:notice] %> </p>
 
-
-
-<p><%=link_to 'New','posters/new'%></p>
-<table>
+<p><%=link_to 'New poster','posters/new', class:'ui blue button'%></p>
+<table class="ui celled table" >
   <thead>
     <tr>
       <th></th>
-      <th colspan="3">Size</th>
-      <th colspan="3">Price</th>
-      <th colspan="3"></th>
+      <th></th>
+      <th colspan="3">Sizes</th>
+      <th colspan="3">Prices</th>
+      <th colspan="2"></th>
+      <th colspan='3'>Actions</th>
+
     </tr>
     <tr>
       <th>Id</th>
@@ -23,7 +41,9 @@
       <th>Large</th>
       <th>Category</th>
       <th>Active</th>
-      <th colspan="3"></th>
+      <th>Edit</th>
+      <th>Details</th>
+      <th>Deactivate</th>
     </tr>
   </thead>
 
@@ -73,10 +93,10 @@
           <td><%= poster.category %></td>
           <td><%= status %></td>
           <td><%= link_to 'Edit', controller: 'posters', action: 'edit', id: poster.id  %></td>
-          <td><%= link_to 'Details', controller: 'posters', action: 'show', id: poster.id  %></td>
+          <td><i class="search icon"/><%=link_to 'Details', controller: 'posters', action: 'show', id: poster.id  %></td>
           <%
             if poster.active.eql? "1"%>
-              <td><%=link_to 'Deactivate', "/posters/#{poster.id}", method: :delete %></td>
+              <td><i class="icon close"></i><%=link_to 'Deactivate', "/posters/#{poster.id}", method: :delete %></td>
           <%
             end
           %>
