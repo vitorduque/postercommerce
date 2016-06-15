@@ -1,62 +1,78 @@
-<%= form_for @poster,
-  url: url_for(controller: params[:controller], action: params[:action]),
-  method: params[:method], html: { class: 'form-control' } do |f| %>
-  <%  if @poster.errors.any? %>
-    <div id="error_explanation">
-
-
-      <ul>
-      <% @poster.errors.full_messages.each do |message| %>
-          <li><%= message %></li>
-        <% end%></ul>
+<br>
+<div class="ui column stackable center page grid">
+  <div class="five wide column"></div><!-- empty div just padding -->
+  <div class='ui form error'>
+    <div class='ui grid'>
+      <%= form_for @poster,
+        url: url_for(controller: params[:controller], action: params[:action]),
+        method: params[:method], html: { class: 'ui sixteen wide column form segment' } do |f| %>
+        <a class="ui red ribbon label">Edit id:<%=@poster.id%></a>
+        <%  if @poster.errors.any? %>
+          <div id="error_explanation" class="ui error message">
+            <ul>
+            <% @poster.errors.full_messages.each do |message| %>
+                <li><%= message %></li>
+              <% end%></ul>
+          </div>
+        <% end %>
+        <%= f.hidden_field :id %>
+        <%= f.hidden_field :created_at %>
+        <%= f.hidden_field :updated_at %>
+        <div class="field">
+          <%= f.label :name%>
+          <%= f.text_field :name%>
+        </div>
+        <div class='grouped fields'>
+          <div class="field">
+            <div class="ui checkbox">
+              <%= f.check_box :small %>
+              <label>Small</label>
+            </div>
+          </div>
+          <div class="field">
+            <div class="ui checkbox">
+              <%= f.check_box :medium %>
+              <label>Medium</label>
+            </div>
+          </div>
+          <div class="field">
+            <div class="ui checkbox">
+              <%= f.check_box :large %>
+              <label>Large</label>
+            </div>
+          </div>
+        </div>
+        <div class="field">
+          <%= f.label :price_small %>
+          <%= f.text_field :price_small%>
+        </div>
+        <div class="field">
+          <%= f.label :price_medium %>
+          <%= f.text_field :price_medium%>
+        </div>
+        <div class="field">
+          <%= f.label :price_large %>
+          <%= f.text_field :price_large%>
+        </div>
+        <div class="field">
+          <%= f.label :category %>
+          <%= f.select :category, options_for_select([["Movies", "Movies"], ["Animation", "Animation"], ["TV Show", "TV Show"]]) %>
+        </div>
+        <div class="field">
+          <div class="ui checkbox">
+            <%= f.check_box :active %>
+            <label>Active</label>
+          </div>
+        </div>
+        <div>
+           <%= f.label :image %>
+           <%= f.file_field :image %>
+        </div>
+        <br>
+        <div class='actions'>
+        <%= f.submit 'Save', class: 'ui fluid blue button'  %>
+        </div>
+      <% end %>
     </div>
-  <% end %>
-  <%= f.hidden_field :id %>
-  <%= f.hidden_field :created_at %>
-  <%= f.hidden_field :updated_at %>
-  <div class="field">
-    <%= f.label :name%>
-    <%= f.text_field :name%>
   </div>
-  <div class="field">
-    <%= f.check_box :small %>
-    <%= f.label :small %>
-  </div>
-  <div class="field">
-    <%= f.check_box :medium %>
-    <%= f.label :medium %>
-  </div>
-  <div class="field">
-    <%= f.check_box :large %>
-    <%= f.label :large %>
-  </div>
-  <div class="field">
-    <%= f.label :price_small %>
-    <%= f.text_field :price_small%>
-  </div>
-  <div class="field">
-    <%= f.label :price_medium %>
-    <%= f.text_field :price_medium%>
-  </div>
-  <div class="field">
-    <%= f.label :price_large %>
-    <%= f.text_field :price_large%>
-  </div>
-  <div class="field">
-    <%= f.label :category %>
-    <%= f.select :category, options_for_select([["Movies", "Movies"], ["Animation", "Animation"], ["TV Show", "TV Show"]]) %>
-  </div>
-  <div class="field">
-    <%= f.check_box :active %>
-    <%= f.label :active %><br>
-  </div>
-  <div>
-     <%= f.label :image %>
-     <%= f.file_field :image %>
-  </div>
-
-  <div class='actions'>
-  <%= f.submit 'Save'  %>
-  </div>
-
-<% end %>
+</div>
