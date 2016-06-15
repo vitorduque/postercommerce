@@ -1,32 +1,55 @@
-<%= form_for @graph,
-  url: url_for(controller: 'admin', action: 'gerenate_graph'),
-  method: :post, html: { class: 'form-control' } do |f| %>
-  <% if flash[:notice] %>
-    <div class="notice"><%= flash[:notice] %></div>
-  <% end %>
+<div class="ui secondary  menu">
+  <button class="ui tiny  compact abeled icon button">
+    <i class="left arrow icon"></i>
+    <%= link_to 'Back to index', admin_index_url%>
+  </button>
+  <a class="active item">
+    Welcome Admin!
+  </a>
+  <%= link_to 'Poster CRUD', posters_path, class:'item' %>
+  <%= link_to 'All orders', admin_orders_path, class: 'item' %>
+  <%= link_to 'Analisys', analisys_path_url, class: 'item' %>
+  <div class="right menu">
+      <%= link_to 'Logout', admin_logout_path, class:'ui item' %><br>
+  </div>
+</div>
+<br><br>
+<div class="ui column stackable center page grid">
+  <div class="five wide column"></div><!-- empty div just padding -->
+  <div class='ui form error'>
+    <div class='ui grid'>
+      <%= form_for @graph,
+        url: url_for(controller: 'admin', action: 'gerenate_graph'),
+        method: :post, html: { class: 'ui sixteen wide column form segment' } do |f| %>
+        <a class="ui red ribbon label">Select a date</a>
+        <% if flash[:notice] %>
+          <div class="ui error message">
+            <div class="notice"><%= flash[:notice] %></div>
+          </div>
+        <% end %>
 
-  <%  if @graph.errors.any? %>
-    <div id="error_explanation">
+        <%  if @graph.errors.any? %>
+          <div id="error_explanation" class="ui error message">
 
-      <ul>
-      <% @graph.errors.full_messages.each do |message| %>
-          <li><%= message %></li>
-        <% end%></ul>
+            <ul>
+            <% @graph.errors.full_messages.each do |message| %>
+                <li><%= message %></li>
+              <% end%></ul>
+          </div>
+        <% end %>
+        <p></p>
+        <div class="field">
+          <%= f.label :begin %>
+          <%= date_field(:graph, :begin) %>
+        </div>
+        <div class="field">
+          <%= f.label :end %>
+          <%= date_field(:graph, :end) %>
+        </div>
+        <div class='actions'>
+        <%= f.submit 'Generate graphs', class:'ui fluid blue button'  %>
+        </div>
+      <% end %>
     </div>
-  <% end %>
-  <div class="field">
-    <%= f.label :begin %>
-    <%= date_field(:graph, :begin) %>
   </div>
-  <div class="field">
-    <%= f.label :end %>
-    <%= date_field(:graph, :end) %>
-  </div>
-  <div class='actions'>
-  <%= f.submit 'Generate graph'  %>
-  </div>
-  <br>
-
-  <%=link_to 'back', controller: 'admin'%>
-
-<% end %>
+</div>
