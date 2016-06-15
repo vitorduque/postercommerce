@@ -1,7 +1,11 @@
-Hello admin, <%=link_to 'Log out', admin_logout_path%><br>
-<hr>
-<%=link_to 'Poster CRUD', posters_path%>
-<hr>
-<%=link_to 'All orders', admin_orders_path%>
-<hr>
-<%=link_to 'Analisys', controller: 'admin', action: 'analisys'%>
+<div class="ui secondary  menu">
+  <a class="active item">
+    Welcome Admin!
+  </a>
+  <%= link_to 'Poster CRUD', posters_path, class:'item' %>
+  <%= link_to 'All orders', admin_orders_path, class: 'item' %>
+  <%= link_to 'Analisys', analisys_path_url, class: 'item' %>
+  <div class="right menu">
+      <%= link_to 'Logout', admin_logout_path, class:'ui item' %><br>
+  </div>
+</div>
