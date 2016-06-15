@@ -6,7 +6,7 @@
       <%= form_for @poster,
         url: url_for(controller: params[:controller], action: params[:action]),
         method: params[:method], html: { class: 'ui sixteen wide column form segment' } do |f| %>
-        <a class="ui red ribbon label">Edit id:<%=@poster.id%></a>
+        <a class="ui red ribbon label"></a>
         <%  if @poster.errors.any? %>
           <div id="error_explanation" class="ui error message">
             <ul>

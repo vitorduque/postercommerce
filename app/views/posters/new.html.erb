@@ -1,8 +1,21 @@
-<%= link_to 'Voltar', posters_path %>
-
 <% params[:action]='create' %>
 <% params[:controller]='posters' %>
 <% params[:method]= :post %>
+<div class="ui secondary  menu">
+  <button class="ui tiny  compact abeled icon button">
+    <i class="left arrow icon"></i>
+    <%= link_to 'Back to list', posters_path%>
+  </button>
+  <a class="active item">
+    Welcome Admin!
+  </a>
+  <%= link_to 'Poster CRUD', posters_path, class:'item' %>
+  <%= link_to 'All orders', admin_orders_path, class: 'item' %>
+  <%= link_to 'Analisys', analisys_path_url, class: 'item' %>
+  <div class="right menu">
+      <%= link_to 'Logout', admin_logout_path, class:'ui item' %><br>
+  </div>
+</div>
 <p id="notice"><%= params[:notice] %> </p>
 
 <%= render 'form' %>
