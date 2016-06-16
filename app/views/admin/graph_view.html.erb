@@ -1,129 +1,151 @@
-<%= javascript_include_tag "//www.google.com/jsapi", "chartkick" %><br><br><br><br>
-<%= pie_chart({"Football" => 10, "Basketball" => 5}) %><br>
-<%= line_chart({20.day.ago => 5, 1368174456 => 4, "2013-05-07 00:00:00 UTC" => 7}) %>
-Between:  <strong><%=@graph.begin%></strong> and <strong><%=@graph.end%></strong><br>
-<%=image_tag(Gchart.bar(size: '500x600',
-                        data: @graph.amount,
-                        max_value: @graph.amount.first,
-                        min_value: 0,
-                        axis_with_labels: ['x', 'y'],
-                        #legend: ['1 - ', '2 - ','3 - ','4 - ','5 - ','6 - '],
-                        #axis_labels: [['1', '2', '3', '4', '5', '6']],
-                        axis_range: [nil, [0,100,5]]
-                        ))%>
+<div class="ui secondary  menu">
+  <button class="ui tiny  compact abeled icon button">
+    <i class="left arrow icon"></i>
+    <%= link_to 'Back to date picker', analisys_path_url%>
+  </button>
+  <a class="active item">
+    Welcome Admin!
+  </a>
+  <%= link_to 'Poster CRUD', posters_path, class:'item' %>
+  <%= link_to 'All orders', admin_orders_path, class: 'item' %>
+  <%= link_to 'Analisys', analisys_path_url, class: 'item' %>
+  <div class="right menu">
+      <%= link_to 'Logout', admin_logout_path, class:'ui item' %><br>
+  </div>
+</div>
+<div align='center'>Between:  <strong><%=@graph.begin%></strong> and <strong><%=@graph.end%></strong><br></div>
+<h4 align='center'>Items X orders X amount sold X date </h4>
+<div class='ui grid'>
+  <div class='eight wide column'>
+    <%=image_tag(Gchart.bar(size: '500x600',
+                            data: @graph.amount,
+                            max_value: @graph.amount.first,
+                            min_value: 0,
+                            axis_with_labels: ['x', 'y'],
+                            #legend: ['1 - ', '2 - ','3 - ','4 - ','5 - ','6 - '],
+                            #axis_labels: [['1', '2', '3', '4', '5', '6']],
+                            axis_range: [nil, [0,100,5]]
+                            ))%>
+  </div>
 
-<table>
-  <thead>
-    <tr>
-      <th>Bar</th>
-      <th>Combination</th>
-      <th>Amount sold</th>
-    </tr>
-  </thead>
-  <tbody>
+  <div class='eight wide column'>
+    <table class='ui celled table'>
+      <thead>
+        <tr>
+          <th>Bar</th>
+          <th>Combination</th>
+          <th>Amount sold</th>
+        </tr>
+      </thead>
+      <tbody>
 
-    <%@graph.names.each_with_index do |name,index|%>
-    <tr>
-      <td><%=index%></td>
-      <td><%=name%></td>
-      <td><%=@graph.amount[index]%></td>
-    </tr>
-    <%end%>
+        <%@graph.names.each_with_index do |name,index|%>
+        <tr>
+          <td><%=index%></td>
+          <td><%=name%></td>
+          <td><%=@graph.amount[index]%></td>
+        </tr>
+        <%end%>
 
-  </tbody>
-</table>
-
-<hr>
-
-<%=image_tag(Gchart.line(data: [@graph.male, @graph.female],
-                         max_value: @graph.max + 1,
-                         :bar_colors => ['0088FF', 'FF69B4'],
-                         min_value: 0,
-                         axis_with_labels: ['x', 'y'],
-                         axis_range: [nil, [0,100,5]],
-                         size: '500x600',
-                         axis_labels: [["Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec"]],
-                         legend:['Male', 'Female'],
-                         legend_position: 'bottom'
-                         ))%><br>
-<table>
-  <thead>
-    <tr>
-      <th>Sex</th>
-      <th>Jan</th>
-      <th>Feb</th>
-      <th>Mar</th>
-      <th>Apr</th>
-      <th>May</th>
-      <th>Jun</th>
-      <th>Jul</th>
-      <th>Aug</th>
-      <th>Sep</th>
-      <th>Oct</th>
-      <th>Nov</th>
-      <th>Dec</th>
-    </tr>
-  </thead>
-  <tbody>
-    <td>Male</td>
-    <%@graph.male.each do |m|%>
-      <td><%=m%>  </td>
-    <%end%>
-    <tr>
-      <td>Female</td>
-      <%@graph.female.each do |f|%>
-        <td><%=f%>  </td>
-      <%end%>
-    </tr>
-  </tbody>
-</table>
+      </tbody>
+    </table>
+  </div>
+</div>
 
 <hr>
-Between 10~19 yrs.<br>
-<%=image_tag(Gchart.bar(size: '500x600',
-                        data: @graph.graph_3_scores[0],
-                        max_value: @graph.graph_3_scores[0][@graph.graph_3_scores[0].index(@graph.graph_3_scores[0].compact.max)],
-                        min_value: 0,
-                        axis_with_labels: ['x', 'y'],
-                        #legend: ['1 - ', '2 - ','3 - ','4 - ','5 - ','6 - '],
-                        axis_labels: [@graph.graph_3_names[0]],
-                        axis_range: [nil, [0,100,5]]
+<h4 align='center'>Sex X date X amount solt</h4>
+<div class='ui grid'>
+  <div class='eight wide column'>
+    <%=image_tag(Gchart.line(data: [@graph.male, @graph.female],
+                             max_value: @graph.max + 1,
+                             :bar_colors => ['0088FF', 'FF69B4'],
+                             min_value: 0,
+                             axis_with_labels: ['x', 'y'],
+                             axis_range: [nil, [0,100,5]],
+                             size: '500x600',
+                             axis_labels: [["Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec"]],
+                             legend:['Male', 'Female'],
+                             legend_position: 'bottom'
+                             ))%>
+  </div>
 
-                        ))%>
+  <div class='eight wide column'>
+    <table class='ui celled table'>
+      <thead>
+        <tr>
+          <th>Sex</th>
+          <th>Jan</th>
+          <th>Feb</th>
+          <th>Mar</th>
+          <th>Apr</th>
+          <th>May</th>
+          <th>Jun</th>
+          <th>Jul</th>
+          <th>Aug</th>
+          <th>Sep</th>
+          <th>Oct</th>
+          <th>Nov</th>
+          <th>Dec</th>
+        </tr>
+      </thead>
+      <tbody>
+        <td>Male</td>
+        <%@graph.male.each do |m|%>
+          <td><%=m%>  </td>
+        <%end%>
+        <tr>
+          <td>Female</td>
+          <%@graph.female.each do |f|%>
+            <td><%=f%>  </td>
+          <%end%>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
 <hr>
-Between 20 ~ 29 yrs.<br>
-<%=image_tag(Gchart.bar(size: '500x600',
-                        data: @graph.graph_3_scores[1],
-                        max_value: @graph.graph_3_scores[1][@graph.graph_3_scores[1].index(@graph.graph_3_scores[1].compact.max)],
-                        min_value: 0,
-                        axis_with_labels: ['x', 'y'],
-                        #legend: ['1 - ', '2 - ','3 - ','4 - ','5 - ','6 - '],
-                        axis_labels: [@graph.graph_3_names[1]],
-                        axis_range: [nil, [0,100,5]]
+<h4 align='center'>Age X category X amount solt</h4>
+<div class='ui grid'>
+  <div class="four wide column">Between 10~19 yrs.<br><%=image_tag(Gchart.bar(size: '500x600',
+                          data: @graph.graph_3_scores[0],
+                          max_value: @graph.graph_3_scores[0][@graph.graph_3_scores[0].index(@graph.graph_3_scores[0].compact.max)],
+                          min_value: 0,
+                          axis_with_labels: ['x', 'y'],
+                          #legend: ['1 - ', '2 - ','3 - ','4 - ','5 - ','6 - '],
+                          axis_labels: [@graph.graph_3_names[0]],
+                          axis_range: [nil, [0,100,5]]
 
-                        ))%>
-<hr>
-Between 30 ~ 39<br>
-<%=image_tag(Gchart.bar(size: '500x600',
-                        data: @graph.graph_3_scores[2],
-                        max_value: @graph.graph_3_scores[2][@graph.graph_3_scores[2].index(@graph.graph_3_scores[2].compact.max)],
-                        min_value: 0,
-                        axis_with_labels: ['x', 'y'],
-                        #legend: ['1 - ', '2 - ','3 - ','4 - ','5 - ','6 - '],
-                        axis_labels: [@graph.graph_3_names[2]],
-                        axis_range: [nil, [0,100,5]]
+                          ))%></div>
+  <div class="four wide column">Between 20 ~ 29 yrs.<br><%=image_tag(Gchart.bar(size: '500x600',
+                          data: @graph.graph_3_scores[1],
+                          max_value: @graph.graph_3_scores[1][@graph.graph_3_scores[1].index(@graph.graph_3_scores[1].compact.max)],
+                          min_value: 0,
+                          axis_with_labels: ['x', 'y'],
+                          #legend: ['1 - ', '2 - ','3 - ','4 - ','5 - ','6 - '],
+                          axis_labels: [@graph.graph_3_names[1]],
+                          axis_range: [nil, [0,100,5]]
 
-                        ))%>
-<hr>
-Between 40 ~ 49<br>
-<%=image_tag(Gchart.bar(size: '500x600',
-                        data: @graph.graph_3_scores[3],
-                        max_value: @graph.graph_3_scores[3][@graph.graph_3_scores[3].index(@graph.graph_3_scores[3].compact.max)] + 10,
-                        min_value: 0,
-                        axis_with_labels: ['x', 'y'],
-                        #legend: ['1 - ', '2 - ','3 - ','4 - ','5 - ','6 - '],
-                        axis_labels: [@graph.graph_3_names[3]],
-                        axis_range: [nil, [0,100,5]]
+                          ))%></div>
+  <div class="four wide column">Between 30 ~ 39<br>
+  <%=image_tag(Gchart.bar(size: '500x600',
+                          data: @graph.graph_3_scores[2],
+                          max_value: @graph.graph_3_scores[2][@graph.graph_3_scores[2].index(@graph.graph_3_scores[2].compact.max)],
+                          min_value: 0,
+                          axis_with_labels: ['x', 'y'],
+                          #legend: ['1 - ', '2 - ','3 - ','4 - ','5 - ','6 - '],
+                          axis_labels: [@graph.graph_3_names[2]],
+                          axis_range: [nil, [0,100,5]]
 
-                        ))%>
-<%=link_to 'back', controller:'admin'%>
+                          ))%></div>
+  <div class="four wide column">Between 40 ~ 49<br>
+  <%=image_tag(Gchart.bar(size: '500x600',
+                          data: @graph.graph_3_scores[3],
+                          max_value: @graph.graph_3_scores[3][@graph.graph_3_scores[3].index(@graph.graph_3_scores[3].compact.max)] + 10,
+                          min_value: 0,
+                          axis_with_labels: ['x', 'y'],
+                          #legend: ['1 - ', '2 - ','3 - ','4 - ','5 - ','6 - '],
+                          axis_labels: [@graph.graph_3_names[3]],
+                          axis_range: [nil, [0,100,5]]
+
+                          ))%>
+</div>
