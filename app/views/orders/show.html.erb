@@ -1,3 +1,11 @@
+<div class="ui secondary  menu">
+  <button class="ui tiny  compact abeled icon button">
+    <i class="left arrow icon"></i>
+    <%= link_to 'Back to list', orders_path%>
+  </button>
+  <%= link_to "My cart ", "/cart", class: 'item' %>
+  <%= link_to 'Logout', log_out_path, class:'item' %>
+</div>
 <%if  @order.shipping_status.eql? "Delivered"%>
 <%=flash[:notice]%>
 <h3>To complain the order</h3>
@@ -30,5 +38,3 @@ Payment Status: <%=@order.payment_status%><br>
 Shipping Method: <%=@order.shipping_method%> <br>
 Shipping Status: <%=@order.shipping_status%><br>
 Total price: <%=@order.total_price%><br><br>
-
-<%=link_to 'Back', controller: 'orders', action: 'index' %>
