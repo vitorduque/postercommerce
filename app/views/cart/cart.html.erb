@@ -27,107 +27,116 @@
     <%= link_to 'Logout', log_out_path, class:'item' %>
   </div>
 <%end%>
-<hr>
-<%=link_to 'Empty my cart', controller: 'cart', action: 'empty_cart' %>
 
-<table>
-  <thead>
-    <tr>
-      <th>Product ID</th>
-      <th>Category</th>
-      <th>Name</th>
-      <th>Size</th>
-      <th>Amount</th>
-      <th>Unit price</th>
-      <th>Subtotal</th>
-    </tr>
-  <thead>
+<br>
+<div align='center'>
+  <table>
+    <thead>
+      <tr>
+        <th>Product ID</th>
+        <th>Category</th>
+        <th>Name</th>
+        <th>Size</th>
+        <th>Amount</th>
+        <th>Unit price</th>
+        <th>Subtotal</th>
+      </tr>
+    <thead>
 
-<%if session[:signed_in]%>
-<%cart_signed_list.each do |item|%>
-  <tbody>
-    <%if item.nil?
-      next
-    end%>
+  <%if session[:signed_in]%>
+  <%cart_signed_list.each do |item|%>
+    <tbody>
+      <%if item.nil?
+        next
+      end%>
+      <%sub_total_price = sub_total_price + (item["unit_price"].to_f * item["amount"].to_f)%>
+      <td><%=item["item_id"]%></td>
+      <td><%=item["category"]%></td>
+      <td><%=item["name"]%></td>
+      <td><%=item["size"]%></td>
+      <td><%=item["amount"]%></td>
+      <td><%=item["unit_price"]%></td>
+      <td><%=sub_total_price%>
+      <%sub_total_price = 0%>
+      <%backup +=  (item["unit_price"].to_f * item["amount"].to_f)%>
+    </tbody>
+    <%end%>
+
+  <%else%>
+  <%cart_list.each do |item|%>
     <%sub_total_price = sub_total_price + (item["unit_price"].to_f * item["amount"].to_f)%>
-    <td><%=item["item_id"]%></td>
-    <td><%=item["category"]%></td>
-    <td><%=item["name"]%></td>
-    <td><%=item["size"]%></td>
-    <td><%=item["amount"]%></td>
-    <td><%=item["unit_price"]%></td>
-    <td><%=sub_total_price%>
-    <%sub_total_price = 0%>
     <%backup +=  (item["unit_price"].to_f * item["amount"].to_f)%>
-  </tbody>
+    <tbody>
+      <td><%=item["item_id"]%></td>
+      <td><%=item["category"]%></td>
+      <td><%=item["name"]%></td>
+      <td><%=item["size"]%></td>
+      <td><%=item["amount"]%></td>
+      <td><%=item["unit_price"]%></td>
+      <td><%=sub_total_price%></td>
+      <%sub_total_price = 0%>
+    </tbody>
+  <%end%>
+  <%end%>
+  </table>
+  <br>
+  <% if flash[:notice] %>
+  <div class='ui form error' align='center'>
+
+    <div class="ui error message">
+      <div class="notice">Error: <%= flash[:notice] %></div>
+    </div>
+  </div>
+  <% end %><br>
+  <button class='ui button'>
+    <%=link_to 'Empty my cart', controller: 'cart', action: 'empty_cart' %>
+  </button>
+  <input type="button" value="Buy ✓" class='ui button' onclick="$('.ui.modal').modal('show');" />
+  <br><br>
+</div>
+<div class='ui modal'>
+  <%= form_for @order,
+    url: url_for(controller: 'orders', action: 'create'),
+    method: 'post', html: { class: 'ui sixteen wide column form segment' } do |f| %>
+
+    <%  if @order.errors.any? %>
+      <div id="error_explanation">
+        <ul>
+        <% @order.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end%></ul>
+      </div>
+    <% end %>
+      <strong>Ship method</strong><br>
+      <%=f.radio_button(:shipping_method, "FedEX", class: "with-gap")%> FedEX: $12.30<br>
+
+      <%=f.radio_button(:shipping_method, "USPS")%> USPS: $10.00<br><br>
+      <%if session[:signed_in]%>
+        <strong>Your address</strong><br>
+        <%=@client.street%>, <%=@client.number%><br>
+        <%=@client.city%>, <%=@client.state%><br>
+        <%=@client.zip_code%><br>
+        Complement: <%=@client.complement%><br>
+        <%=link_to 'Change my address', controller: 'client_objects', action: 'edit', id: @client.id   %>
+      <%end%>
+  <hr>
+      <strong>Payment method</strong><br>
+      <%=f.radio_button(:payment_method, "Paypal")%> Paypal<br>
+      <%=f.radio_button(:payment_method, "Bank slip")%> Bank slip
+  <hr>
+  <%=f.hidden_field :total_price, :value => backup%>
+  <%=f.hidden_field :client_id, :value => session[:user_id]%>
+  <strong>Total:</strong>
+  <%=backup%> + Ship price<br><br>
+      <%=f.label :voucher %>
+      <!--<%=f.text_field :id_voucher%><br>-->
+      <select name="order[id_voucher]" id="order_id_voucher">
+        <option value=<%nil%>> No one </option>
+        <%@vouchers.each.with_index do |v, i|%>
+          <option value="<%=v.id_voucher%>"> <%=i+1%> - $ <%=v.price%> </option>
+        <%end%>
+      </select><br>
+      <%=f.submit 'Buy', class:'ui fluid blue button' %>
   <%end%>
 
-<%else%>
-<%cart_list.each do |item|%>
-  <%sub_total_price = sub_total_price + (item["unit_price"].to_f * item["amount"].to_f)%>
-  <%backup +=  (item["unit_price"].to_f * item["amount"].to_f)%>
-  <tbody>
-    <td><%=item["item_id"]%></td>
-    <td><%=item["category"]%></td>
-    <td><%=item["name"]%></td>
-    <td><%=item["size"]%></td>
-    <td><%=item["amount"]%></td>
-    <td><%=item["unit_price"]%></td>
-    <td><%=sub_total_price%></td>
-    <%sub_total_price = 0%>
-  </tbody>
-<%end%>
-<%end%>
-</table>
-<hr>
-<% if flash[:notice] %>
-  <div class="notice">Error: <%= flash[:notice] %></div>
-<% end %>
-<%= form_for @order,
-  url: url_for(controller: 'orders', action: 'create'),
-  method: 'post', html: { class: 'form-control' } do |f| %>
-
-
-  <%  if @order.errors.any? %>
-    <div id="error_explanation">
-      <ul>
-      <% @order.errors.full_messages.each do |message| %>
-          <li><%= message %></li>
-        <% end%></ul>
-    </div>
-  <% end %>
-
-    <strong>Your adress </strong><br>
-    <strong>Ship method</strong><br>
-    <%=f.radio_button(:shipping_method, "FedEX", class: "with-gap")%> FedEX: $12.30<br>
-
-    <%=f.radio_button(:shipping_method, "USPS")%> USPS: $10.00<br><br>
-    <%if session[:signed_in]%>
-      <strong>Your address</strong><br>
-      <%=@client.street%>, <%=@client.number%><br>
-      <%=@client.city%>, <%=@client.state%><br>
-      <%=@client.zip_code%><br>
-      Complement: <%=@client.complement%><br>
-      <%=link_to 'Change my address', controller: 'client_objects', action: 'edit', id: @client.id   %>
-    <%end%>
-<hr>
-    <strong>Payment method</strong><br>
-    <%=f.radio_button(:payment_method, "Paypal")%> Paypal<br>
-    <%=f.radio_button(:payment_method, "Bank slip")%> Bank slip
-<hr>
-<%=f.hidden_field :total_price, :value => backup%>
-<%=f.hidden_field :client_id, :value => session[:user_id]%>
-<strong>Total:</strong>
-<%=backup%> + Ship price<br>
-    <%=f.label :voucher %>
-    <!--<%=f.text_field :id_voucher%><br>-->
-    <select name="order[id_voucher]" id="order_id_voucher">
-      <option value=<%nil%>> No one </option>
-      <%@vouchers.each.with_index do |v, i|%>
-        <option value="<%=v.id_voucher%>"> <%=i+1%> - $ <%=v.price%> </option>
-      <%end%>
-    </select><br><br>
-
-<hr>
-    <%=f.submit 'Buy' %>
-<%end%>
+</div>

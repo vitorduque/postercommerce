@@ -19,7 +19,7 @@ Rails.application.routes.draw do
 
   get '/log_out', to: 'login#log_out', as: 'log_out' #log_out_path
   post 'cart/add_to_cart', to:'cart#add_to_cart', as: 'add_to_cart_path'
-  get '/my_cart', to: 'store#my_cart'
+  get '/my_cart', to: 'store#my_cart', as: 'cart_path'
   get '/empty_cart', to: 'cart#empty_cart'
   put '/clients', to: 'clients#update'
   get '/cancel_order', to: 'orders#cancel_order'
@@ -36,7 +36,7 @@ Rails.application.routes.draw do
   get '/render_analisys', to: 'admin#render_analisys'
 
   post '/complain_order', to: 'orders#complain_order'
-  
+
   #post '/edit', to: 'clients#edit'
   #post '/clients/:id/edit', to: 'clients#update'
   # The priority is based upon order of creation: first created -> highest priority.
