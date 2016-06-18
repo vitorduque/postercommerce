@@ -69,21 +69,15 @@
       <td><%=order.client_id%></td>
       <%if order.payment_status.eql? "0"%>
       <td>
-        <button class="ui fluid tiny  compact abeled icon button">
-          <%= link_to "Set payment as 'Paid'", controller: 'admin_orders', action: 'set', id: order.id, id_client: order.client_id%>
-        </button>
+        <%= link_to "Set payment as 'Paid'", controller: 'admin_orders', action: 'set', id: order.id, id_client: order.client_id%>
       </td>
       <%elsif order.shipping_status.eql? "1"%>
       <td>
-        <button class="ui fluid tiny  compact abeled icon button">
-          <%= link_to "Set deliver as 'Delivered'", controller: 'admin_orders', action:'set', id: order.id, id_client: order.client_id%>
-        </button>
+        <%= link_to "Set deliver as 'Delivered'", controller: 'admin_orders', action:'set', id: order.id, id_client: order.client_id%>
       </td>
       <%elsif order.shipping_status.eql? "4"%>
       <td>
-        <button class="ui fluid tiny  compact abeled icon button">
-          <%= link_to "Send voucher", controller: 'admin_orders', action:'set', id: order.id, id_client: order.client_id%>
-        </button>
+        <%= link_to "Send voucher", controller: 'admin_orders', action:'set', id: order.id, id_client: order.client_id%>
       </td>
       <%end%>
 

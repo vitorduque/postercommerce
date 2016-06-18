@@ -69,8 +69,9 @@ class CartController < ApplicationController
 private
     def get_client
       if session[:signed_in]
-        dao = ClientDao.new(OpenConnection.new('localhost', 'root', 'root', '3306', 'appmysql_development'))
-        @client = dao.find(session[:user_id])
+        #dao = ClientDao.new(OpenConnection.new('localhost', 'root', 'root', '3306', 'appmysql_development'))
+        #@client = dao.find(session[:user_id])
+        @client = @command['show'].execute(Client.new(id: session[:user_id].to_s))
       end
     end
 end
