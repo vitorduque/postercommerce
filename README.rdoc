@@ -2,14 +2,14 @@
 
 To run it:
 
-* Ruby version: ruby 2.2.3p173
+* Ruby version: ruby 2.3.1p112 (2016-04-26 revision 54768)
 
 * Rails version: Rails 4.2.6
 
 Configuration:
-* Run postercommerce.sql to create tables and seed the database
+* Run dump.sql to create tables and seed the database
 * Modify dao_connection_datas.rb
-* Modify the "require"s
+* Modify the "require"s in Facade and some Controllers
 * Run it
 
 
@@ -27,4 +27,4 @@ Configuration:
         * Using:
                 * MVC architectural pattern
 
-* Documentation is still being made -in portuguese- (see on "software specifications" folder) :D
+* Documentation -in portuguese- (see on "SoftwareSpecifications" folder) :D
