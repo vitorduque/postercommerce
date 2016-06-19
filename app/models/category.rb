@@ -1,4 +1,5 @@
 class Category
+  include ActiveModel::Model
   attr_accessor :category
 
   def initialize(category)

@@ -5,18 +5,19 @@ class ItemDao
   end
 
 
-  def create(cart, client_id, order_id)
+  def create(cart)
     db = @conn.open
     id = nil
     size = nil
     amount = nil
 
-    cart.each do |item|
+    cart.cart.each do |item|
       id = item["item_id"]
       size = item["size"]
       amount = item["amount"]
 
-      db.query("INSERT INTO orders_has_posters (orders_id, orders_clients_id, posters_id, size, amount) VALUES('#{order_id}', '#{client_id}', '#{id}', '#{size}', '#{amount}' )")
+      db.query("INSERT INTO orders_has_posters (orders_id, orders_clients_id, posters_id, size, amount)
+      VALUES('#{cart.order_id}', '#{cart.client_id}', '#{id}', '#{size}', '#{amount}' )")
     end
     db.close
   end

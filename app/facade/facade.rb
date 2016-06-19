@@ -39,6 +39,7 @@ class Facade
   require '/home/vitor/RailsProjects/postercommerce/app/validations/graph_date.rb'
   require '/home/vitor/RailsProjects/postercommerce/app/validations/graph_return.rb'
   require '/home/vitor/RailsProjects/postercommerce/app/validations/born_date_validation.rb'
+  require '/home/vitor/RailsProjects/postercommerce/app/dao/order_item_dao.rb'
 
   def initialize
     dao_conn_data = DaoConnectionData.new()
@@ -49,24 +50,26 @@ class Facade
     @dao[Order.to_s] = OrderDao.new(OpenConnection.new(dao_conn_data.host, dao_conn_data.user,dao_conn_data.password,dao_conn_data.port,dao_conn_data.database_name))
     @dao[Voucher.to_s] = VoucherDao.new(OpenConnection.new(dao_conn_data.host, dao_conn_data.user,dao_conn_data.password,dao_conn_data.port,dao_conn_data.database_name))
     @dao[Graph.to_s] = GraphDao.new(OpenConnection.new(dao_conn_data.host, dao_conn_data.user,dao_conn_data.password,dao_conn_data.port,dao_conn_data.database_name))
+    @dao[Cart.to_s] =  ItemDao.new(OpenConnection.new(dao_conn_data.host, dao_conn_data.user,dao_conn_data.password,dao_conn_data.port,dao_conn_data.database_name))
 
     #Objects
     @dao[ClientObject.to_s] = ClientDao.new(OpenConnection.new(dao_conn_data.host, dao_conn_data.user,dao_conn_data.password,dao_conn_data.port,dao_conn_data.database_name))
     @dao[PosterObject.to_s] = PosterDao.new(OpenConnection.new(dao_conn_data.host, dao_conn_data.user,dao_conn_data.password,dao_conn_data.port,dao_conn_data.database_name))
 
-    @strategy = Hash.new()
+    @strategy = Hash.new
 
-    @strategy[Poster.to_s] = Hash.new()
-    @strategy[Client.to_s] = Hash.new()
-    @strategy[Login.to_s] = Hash.new()
-    @strategy[Order.to_s] = Hash.new()
-    @strategy[Voucher.to_s] = Hash.new()
+    @strategy[Poster.to_s] = Hash.new
+    @strategy[Client.to_s] = Hash.new
+    @strategy[Login.to_s] = Hash.new
+    @strategy[Order.to_s] = Hash.new
+    @strategy[Voucher.to_s] = Hash.new
     @strategy[Graph.to_s] = Hash.new
+    @strategy[Cart.to_s] = Hash.new
 
     @strategy[ClientObject.to_s] = Hash.new
     @strategy[PosterObject.to_s] = Hash.new
 
-    @strategy[PosterObject.to_s]['create'] = Array.new()
+    @strategy[PosterObject.to_s]['create'] = Array.new
     @strategy[PosterObject.to_s]['create'][0] = PhotoExtensionValidation.new
     @strategy[PosterObject.to_s]['create'][1] = NullPosterName.new
     @strategy[PosterObject.to_s]['create'][2] = PriceSmallPoster.new
@@ -175,6 +178,9 @@ class Facade
     @strategy[Graph.to_s]['graph'] = Array.new()
     @strategy[Graph.to_s]['graph'][0] = GraphDateValidation.new
     @strategy[Graph.to_s]['graph'][1] = GraphReturnValidation.new
+
+    @strategy[Cart.to_s]['create'] = Array.new
+    @strategy[Cart.to_s]['show'] = Array.new
 
     @strategyResult = ""
   end

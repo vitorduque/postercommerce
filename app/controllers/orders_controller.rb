@@ -89,6 +89,7 @@ class OrdersController < ApplicationController
         end
         if result.nil? and result2.nil?
           order_id = @command['get_last_order_by_id'].execute(@order)
+          #binding.pry
           insert_items(session[:cart_signed_in][session[:user_id].to_s], @order.client_id, order_id)
           SendOrder.send_order_email(@client, @order, session[:cart_signed_in][session[:user_id].to_s]).deliver
           session[:cart_signed_in] = nil
@@ -170,14 +171,17 @@ private
     if session[:signed_in]
       #dao = ClientDao.new(OpenConnection.new('localhost', 'root', 'root', '3306', 'appmysql_development'))
       #@client = dao.find(session[:user_id])
-      #@client = @command['show'].execute(Client.new(id: session[:user_id]))
+      #@client = @co  mmand['show'].execute(Client.new(id: session[:user_id]))
       @client = @command['show'].execute(Client.new(id: session[:user_id].to_s))
     end
   end
 
   def insert_items(cart, client_id, order_id)
-    dao_item = ItemDao.new(OpenConnection.new('localhost', 'root', 'root', '3306', 'appmysql_development'))
-    dao_item.create(cart, client_id, order_id)
+    #binding.pry
+    #teste = Cart.new(cart: cart, client_id: client_id, order_id: order_id)
+    @error = @command['create'].execute(Cart.new(cart: cart, client_id: client_id, order_id: order_id))
+    #dao_item = ItemDao.new(OpenConnection.new('localhost', 'root', 'root', '3306', 'appmysql_development'))
+    #dao_item.create(cart, client_id, order_id)
   end
 
   def find_items(client_id, order_id)
