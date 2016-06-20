@@ -231,6 +231,8 @@ class Facade
     if @strategyResult.length == 0
       if domain.class.to_s.eql? "Voucher"
         @dao[domain.class.to_s].find(domain.id_voucher)
+      elsif domain.class.to_s.eql? "Cart"
+        @dao[domain.class.to_s].find(domain)
       else
         @dao[domain.class.to_s].find(domain.id)
       end

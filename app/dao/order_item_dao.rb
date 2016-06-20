@@ -22,14 +22,14 @@ class ItemDao
     db.close
   end
 
-  def find_items(client_id, order_id)
+  def find(cart)
     db = @conn.open
     items = Array.new
 
     result = db.query("SELECT orders_has_posters.*, posters.name, posters.price_small, posters.price_medium, posters.price_large, posters.small, posters.medium, posters.large from orders_has_posters
                       JOIN posters
                       ON orders_has_posters.posters_id = posters.id
-                      WHERE orders_clients_id = '#{client_id}' AND orders_id = #{order_id};")
+                      WHERE orders_clients_id = '#{cart.client_id}' AND orders_id = #{cart.order_id};")
 
     result.each do |row|
       item = OrderItem.new()

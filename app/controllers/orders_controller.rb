@@ -185,8 +185,9 @@ private
   end
 
   def find_items(client_id, order_id)
-    dao_item = ItemDao.new(OpenConnection.new('localhost', 'root', 'root', '3306', 'appmysql_development'))
-    dao_item.find_items(client_id, order_id)
+    @items = @command['show'].execute(Cart.new(client_id: client_id, order_id: order_id))
+    #dao_item = ItemDao.new(OpenConnection.new('localhost', 'root', 'root', '3306', 'appmysql_development'))
+    #dao_item.find_items(client_id, order_id)
   end
 
 
