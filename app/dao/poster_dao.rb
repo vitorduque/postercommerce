@@ -4,25 +4,46 @@ class PosterDao
     @connection = conn
   end
 
-  def list
-    db = @connection.open
-    result_list = db.query('select * from posters', cast: false)
+  def list(poster)
     posters = Array.new
-    result_list.each do |row|
-      poster = Poster.new()
-      poster.id = row['id']
-      poster.name = row['name']
-      poster.small = row['small']
-      poster.medium = row['medium']
-      poster.large = row['large']
-      poster.price_small = row['price_small']
-      poster.price_medium = row['price_medium']
-      poster.price_large =  row['price_large']
-      poster.category = row['category']
-      poster.created_at = row['reg_date']
-      poster.active = row['active']
-      poster.image = row['image']
-      posters << poster
+    if poster.q.nil?
+      db = @connection.open
+      result_list = db.query('select * from posters', cast: false)
+      result_list.each do |row|
+        poster = Poster.new()
+        poster.id = row['id']
+        poster.name = row['name']
+        poster.small = row['small']
+        poster.medium = row['medium']
+        poster.large = row['large']
+        poster.price_small = row['price_small']
+        poster.price_medium = row['price_medium']
+        poster.price_large =  row['price_large']
+        poster.category = row['category']
+        poster.created_at = row['reg_date']
+        poster.active = row['active']
+        poster.image = row['image']
+        posters << poster
+      end
+    else
+      db = @connection.open
+      result_list = db.query("select * from posters where id like '%#{poster.q}%' or  name  like '%#{poster.q}%' or category like '%#{poster.q}%';", cast: false)
+      result_list.each do |row|
+        poster = Poster.new()
+        poster.id = row['id']
+        poster.name = row['name']
+        poster.small = row['small']
+        poster.medium = row['medium']
+        poster.large = row['large']
+        poster.price_small = row['price_small']
+        poster.price_medium = row['price_medium']
+        poster.price_large =  row['price_large']
+        poster.category = row['category']
+        poster.created_at = row['reg_date']
+        poster.active = row['active']
+        poster.image = row['image']
+        posters << poster
+      end
     end
     db.close
     return posters

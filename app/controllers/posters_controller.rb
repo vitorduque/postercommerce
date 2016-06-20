@@ -3,7 +3,7 @@ class PostersController < ApplicationController
   def index
     if session[:admin_signed_in]
       #@posters = @command['list'].execute(Poster.new)
-      @posters = @command['list'].execute(PosterObject.new(nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil))
+      @posters = @command['list'].execute(PosterObject.new(nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil))
       render :index
     else
       redirect_to controller: 'admin'
@@ -11,13 +11,13 @@ class PostersController < ApplicationController
   end
 
   def edit
-    if !(@poster = @command['show'].execute(PosterObject.new(params[:id],nil,nil,nil,nil,nil,nil,nil,nil,nil,nil)))
+    if !(@poster = @command['show'].execute(PosterObject.new(params[:id],nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil)))
       redirect_to controller: 'posters', action: 'index', notice: 'Error: No ID reached out'
     end
   end
 
   def destroy
-    result = @command['delete'].execute(PosterObject.new(params[:id],nil,nil,nil,nil,nil,nil,nil,nil,nil,nil))
+    result = @command['delete'].execute(PosterObject.new(params[:id],nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil))
     if result.nil?
       redirect_to controller: posters_path
     else
@@ -28,7 +28,7 @@ class PostersController < ApplicationController
   end
 
   def show
-    @poster = @command['show'].execute(PosterObject.new(params[:id],nil,nil,nil,nil,nil,nil,nil,nil,nil,nil))
+    @poster = @command['show'].execute(PosterObject.new(params[:id],nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil))
     if @poster == false
       redirect_to controller: 'posters', action: 'index', notice: 'Error: No ID reached out'
     else
@@ -43,7 +43,7 @@ class PostersController < ApplicationController
     category = Category.new(@poster.category)
 
     @poster_object = PosterObject.new(params[:id], @poster.name, @poster.small, @poster.medium, @poster.large, @poster.price_small, @poster.price_medium,
-    @poster.price_large, category, @poster.active, @poster.image)
+    @poster.price_large, category, @poster.active, @poster.image, nil)
 
 
     result = @command['edit'].execute(@poster_object)
@@ -68,7 +68,7 @@ class PostersController < ApplicationController
     category = Category.new(@poster.category)
 
     @poster_object = PosterObject.new(nil, @poster.name, @poster.small, @poster.medium, @poster.large, @poster.price_small, @poster.price_medium,
-    @poster.price_large, category, @poster.active, @poster.image)
+    @poster.price_large, category, @poster.active, @poster.image, nil)
 
     result = @command['create'].execute(@poster_object)
     if result.nil?

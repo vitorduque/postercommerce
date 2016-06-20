@@ -3,7 +3,7 @@ class CartController < ApplicationController
   def add_to_cart
 
     #poster = @command['show'].execute(Poster.new(id: params[:cart_item]["item_id"]))
-    poster = @command['show'].execute(PosterObject.new(params[:cart_item]["item_id"],nil,nil,nil,nil,nil,nil,nil,nil,nil,nil))
+    poster = @command['show'].execute(PosterObject.new(params[:cart_item]["item_id"],nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil))
 
     price = {"Small" => poster.price_small,
                      "Medium" => poster.price_medium,

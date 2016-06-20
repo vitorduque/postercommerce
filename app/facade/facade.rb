@@ -186,7 +186,11 @@ class Facade
   end
 
   def list(domain)
-    something = @dao[domain.class.to_s].list
+    if domain.class.to_s.eql? "PosterObject"
+      something = @dao[domain.class.to_s].list(domain)
+    else
+      something = @dao[domain.class.to_s].list
+    end
     something
   end
 

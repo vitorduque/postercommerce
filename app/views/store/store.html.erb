@@ -3,12 +3,17 @@
   <%=link_to 'Login', "/login", class:'item'%>
   <%=link_to 'Register', "/clients/new", class: 'item'%>
   <%= link_to "My cart ", "/cart", class: 'item' %>
-
+  <%= link_to "Index", root_path, class: 'item' %>
   <div class="right menu">
     <div class="item">
       <div class="ui icon input">
-        <input type="text" placeholder="Search...">
-        <i class="search link icon"></i>
+        <%= form_for @poster,
+          url: url_for(controller: 'store', action: 'index'),
+          method: 'get', html: { class: 'form-control' } do |f| %>
+
+          <%= f.text_field :q, placeholder: "Search..."%>
+          <%= f.submit 'Go', class:'search link icon'%>
+        <%end%>
       </div>
     </div>
   </div>
@@ -20,11 +25,17 @@
     </a>
     <%= link_to "My orders ", 'orders', class:'item' %>
     <%= link_to "My cart ", "/cart", class: 'item' %>
+    <%= link_to "Index", root_path, class: 'item' %>
     <div class="right menu">
       <div class="item">
         <div class="ui icon input">
-          <input type="text" placeholder="Search...">
-          <i class="search link icon"></i>
+          <%= form_for @poster,
+            url: url_for(controller: 'store', action: 'index'),
+            method: 'get', html: { class: 'form-control' } do |f| %>
+
+            <%= f.text_field :q, placeholder: "Search..."%>
+            <%= f.submit 'Go', class:'search link icon'%>
+          <%end%>
         </div>
       </div>
         <%= link_to 'Logout', log_out_path, class:'ui item' %><br>

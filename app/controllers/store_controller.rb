@@ -13,7 +13,17 @@ class StoreController < ApplicationController
       session[:cart] = Array.new
     end
     @list = Array.new
-    @posters = @command['list'].execute(PosterObject.new(nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil))
+    @poster = PosterObject.new(nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil, nil)
+
+    @posters = @command['list'].execute(PosterObject.new(nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil, nil))
+
+    if not params[:poster_object].nil?
+      @posters = @command['list'].execute(PosterObject.new(nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil, params[:poster_object][:q]))
+    else
+
+      @posters = @command['list'].execute(PosterObject.new(nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil, nil))
+    end
+    #binding.pry
     render 'store'
   end
 
