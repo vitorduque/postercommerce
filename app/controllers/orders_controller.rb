@@ -120,7 +120,7 @@ class OrdersController < ApplicationController
   end
 
   def complain_order
-
+    
     @order = get_order_by_id(params[:order][:id])
     @order.total_price = params[:order][:total_price].to_f
     get_client
